@@ -3699,8 +3699,15 @@ transform: translateY(0);
 // Auto-detect if on mobile or desktop
 // New code - automatically detects the correct address
 const API_BASE = (() => {
-const hostname = window.location.hostname;
-return `http://${hostname}:8000/api`;
+  const hostname = window.location.hostname;
+  
+  // Development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:8000/api';
+  }
+  
+  // Production - use your actual backend URL with HTTPS
+  return 'https://your-backend-domain.com/api';
 })();
 
 let authToken = null;
