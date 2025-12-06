@@ -1,0 +1,25 @@
+2025-10-28 04:17:35,601 - agroweather - WARNING - bcrypt module not available. Using PBKDF2-SHA256 fallback for password hashing.
+2025-10-28 04:17:38,284 - agroweather - WARNING - bcrypt module not available. Using PBKDF2-SHA256 fallback for password hashing.
+2025-10-28 04:17:58,576 - agroweather - WARNING - bcrypt module not available. Using PBKDF2-SHA256 fallback for password hashing.
+2025-10-28 04:19:16,204 - agroweather - WARNING - bcrypt module not available. Using PBKDF2-SHA256 fallback for password hashing.
+2025-10-28 04:19:16,253 - agroweather - INFO - Initializing database at: C:\Users\dodsd\Desktop\AgroWeather\agroweather\backend\agroweather.db
+2025-10-28 04:19:16,299 - agroweather - INFO - Database initialization complete
+2025-10-28 04:19:16,299 - agroweather - INFO - Application started successfully
+2025-10-28 04:19:33,696 - agroweather - ERROR - Internal server error: no such column: is_active
+2025-10-28 04:19:35,099 - agroweather - ERROR - Internal server error: no such column: is_active
+2025-10-28 04:19:36,218 - agroweather - ERROR - Internal server error: no such column: is_active
+2025-10-28 04:21:47,226 - agroweather - ERROR - Internal server error: no such column: is_active
+2025-10-28 04:22:12,082 - agroweather - INFO - Application shutting down
+2025-10-28 04:37:22,676 - agroweather - WARNING - bcrypt module not available. Using PBKDF2-SHA256 fallback for password hashing.
+2025-10-28 04:37:22,708 - agroweather - INFO - Initializing database at: C:\Users\dodsd\Desktop\AgroWeather\agroweather\backend\agroweather.db
+2025-10-28 04:37:22,709 - agroweather - INFO - Database initialization complete
+2025-10-28 04:37:22,710 - agroweather - INFO - Application started successfully
+2025-10-28 04:37:37,811 - agroweather - ERROR - Internal server error: no such column: is_active
+2025-10-28 04:38:32,674 - agroweather - INFO - Application shutting down
+2025-10-28 04:38:57,563 - agroweather - WARNING - bcrypt module not available. Using PBKDF2-SHA256 fallback for password hashing.
+2025-10-28 04:38:57,592 - agroweather - INFO - Initializing database at: C:\Users\dodsd\Desktop\AgroWeather\agroweather\backend\agroweather.db
+2025-10-28 04:38:57,594 - agroweather - INFO - Database initialization complete
+2025-10-28 04:38:57,595 - agroweather - INFO - Application started successfully
+2025-10-28 04:39:07,645 - agroweather - ERROR - Internal server error: No item with that key
+2025-10-28 04:39:36,613 - agroweather - ERROR - Signup error: table farmers has no column named email
+2025-10-28 04:40:17,672 - agroweather - INFO - Application shutting down
