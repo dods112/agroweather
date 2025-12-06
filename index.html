@@ -1,0 +1,5119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- PWA Meta Tags -->
+<meta name="theme-color" content="#22c55e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgroWeather - Smart Farming Assistant</title>
+<style>
+
+
+
+/* Base improvements for all mobile devices */
+@media (max-width: 768px) {
+/* Dashboard header - Stacked layout */
+.dashboard-header {
+flex-direction: column;
+padding: 16px;
+gap: 16px;
+align-items: stretch !important;
+}
+.dashboard-header > div:last-child {
+align-items: stretch !important;
+width: 100%;
+}
+
+/* Make user profile card full width */
+.user-profile-card {
+width: 100% !important;
+padding: 14px 16px !important;
+display: flex !important;
+flex-direction: row !important;
+align-items: center !important;
+justify-content: flex-start !important;
+gap: 14px !important;
+}
+
+.user-avatar {
+flex-shrink: 0;
+width: 48px !important;
+height: 48px !important;
+font-size: 1.4rem !important;
+}
+
+/* Stack buttons vertically on mobile */
+.dashboard-header .btn-small {
+flex: 1;
+justify-content: center;
+min-width: 0;
+padding: 12px 8px;
+font-size: 0.85rem;
+}
+.user-profile-card > div:last-child > div:first-child {
+font-size: 0.8rem !important;
+line-height: 1.2 !important;
+}
+.user-profile-card > div:last-child > div:last-child {
+font-size: 1rem !important;
+line-height: 1.2 !important;
+}
+.user-profile-card > div:last-child {
+flex: 1;
+text-align: left !important;
+display: flex;
+flex-direction: column;
+justify-content: center;
+gap: 2px;
+}
+/* Make button container wrap nicely */
+.dashboard-header > div:last-child > div:last-child {
+flex-wrap: wrap;
+gap: 8px;
+width: 100%;
+}
+
+/* Each button takes equal space */
+.dashboard-header .btn-small {
+flex: 1 1 calc(50% - 4px); /* 2 buttons per row */
+}
+/* Better scrolling on iOS */
+body {
+-webkit-overflow-scrolling: touch;
+overscroll-behavior-y: none;
+}
+
+/* Enhanced touch targets */
+button, a, input, select {
+min-height: 48px;
+min-width: 48px;
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Touch feedback */
+button:active, a:active {
+transform: scale(0.96);
+}
+
+/* Container adjustments with fade-in */
+.container {
+padding: 12px;
+animation: fadeInUp 0.6s ease-out;
+}
+
+/* Welcome/Start screens - Enhanced */
+.start-screen {
+padding: 20px;
+min-height: 100vh;
+}
+
+
+h1 {
+font-size: 2.5rem !important;
+line-height: 1.2;
+margin-bottom: 1rem;
+}
+
+.tagline {
+font-size: 1rem !important;
+line-height: 1.5;
+}
+
+.logo {
+font-size: 4rem !important;
+animation: bounceIn 1s ease-out;
+}
+
+/* Auth boxes - Enhanced with shadow */
+.auth-box {
+padding: 24px;
+margin: 12px;
+box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+border-radius: 24px;
+}
+
+.auth-box h2 {
+font-size: 1.5rem;
+margin-bottom: 1.5rem;
+}
+
+/* Dashboard header - Stacked layout */
+.dashboard-header {
+flex-direction: column;
+padding: 16px;
+gap: 16px;
+align-items: stretch !important;
+}
+
+.dashboard-header > div {
+width: 100%;
+}
+
+.welcome-text h2 {
+font-size: 1.4rem;
+line-height: 1.3;
+}
+
+/* Enhanced Cards with slide-in animation */
+.card {
+padding: 16px;
+margin-bottom: 16px;
+border-radius: 20px;
+animation: slideInUp 0.5s ease-out backwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+
+.card h3 {
+font-size: 1.1rem;
+margin-bottom: 0.75rem;
+}
+
+/* Weather display - Mobile optimized */
+#currentWeather .big-temp {
+font-size: 3.5rem !important;
+line-height: 1;
+}
+
+#currentWeather .desc {
+font-size: 1.2rem !important;
+line-height: 1.3;
+}
+
+#currentWeather .top-row {
+flex-direction: column;
+align-items: flex-start;
+gap: 8px;
+}
+
+#currentWeather .location-label {
+font-size: 0.95rem;
+}
+
+#currentWeather .main-row {
+flex-direction: column;
+align-items: flex-start;
+gap: 12px;
+}
+
+/* Horizontal scroll with momentum */
+#currentWeather .hourly-row {
+padding: 12px 0;
+gap: 12px;
+-webkit-overflow-scrolling: touch;
+scroll-snap-type: x mandatory;
+scroll-padding: 12px;
+}
+
+#currentWeather .hour-item {
+min-width: 70px;
+scroll-snap-align: start;
+flex-shrink: 0;
+}
+
+#currentWeather .days-header {
+flex-wrap: wrap;
+gap: 8px;
+}
+
+#currentWeather .day-chip {
+min-width: auto;
+font-size: 0.85rem;
+}
+
+/* Grid layouts - 2 columns on mobile */
+#currentWeather .daily-grid {
+grid-template-columns: repeat(2, 1fr) !important;
+gap: 10px;
+}
+
+#currentWeather .metrics-grid {
+grid-template-columns: repeat(2, 1fr) !important;
+gap: 10px;
+}
+
+#currentWeather .metric {
+padding: 10px;
+background: rgba(15, 23, 42, 0.5);
+border-radius: 12px;
+}
+
+/* Form improvements */
+.form-group {
+margin-bottom: 1.2rem;
+}
+
+.form-row {
+grid-template-columns: 1fr !important;
+gap: 1rem;
+}
+
+/* Prevent zoom on iOS */
+input, select, textarea {
+font-size: 16px !important;
+border-radius: 12px;
+}
+
+input:focus, select:focus, textarea:focus {
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+/* Enhanced buttons */
+button {
+padding: 14px 20px;
+font-size: 0.95rem;
+border-radius: 12px;
+font-weight: 600;
+}
+
+.btn-small {
+padding: 10px 16px;
+font-size: 0.9rem;
+}
+
+.btn-primary {
+box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+}
+
+.btn-primary:active {
+box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+/* Location actions - Full width stacked */
+.location-actions-enhanced {
+flex-direction: column;
+gap: 12px;
+}
+
+.btn-enhanced-action {
+width: 100%;
+min-width: auto;
+justify-content: center;
+}
+
+/* Music controls - Bottom bar */
+#musicControl {
+left: 8px;
+right: 8px;
+bottom: 8px;
+border-radius: 16px;
+}
+
+#musicControl > div {
+flex-wrap: wrap;
+padding: 12px;
+gap: 10px;
+justify-content: center;
+}
+
+#musicVolume {
+width: 100px;
+}
+
+/* Period buttons - Better mobile layout */
+.enhanced-period-buttons {
+flex-direction: row;
+gap: 6px;
+}
+
+.enhanced-period-btn {
+flex: 1;
+min-width: 0;
+padding: 10px 12px;
+font-size: 0.85rem;
+}
+
+.enhanced-period-btn .period-icon {
+font-size: 1rem;
+}
+
+/* Forecast items - Stacked layout */
+.forecast-item {
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+padding: 12px;
+}
+
+.forecast-date {
+font-size: 0.95rem;
+font-weight: 700;
+}
+
+.forecast-values {
+flex-direction: row;
+gap: 1rem;
+width: 100%;
+justify-content: space-between;
+}
+
+/* Notification panel - Full screen */
+.notification-panel {
+width: 100% !important;
+right: -100% !important;
+}
+
+.notification-panel.open {
+right: 0 !important;
+}
+
+.notification-item {
+padding: 14px;
+margin-bottom: 10px;
+}
+
+/* User profile section */
+.user-profile-card {
+flex-direction: column;
+align-items: flex-start !important;
+width: 100%;
+}
+
+/* Dashboard grid - Single column */
+.dashboard-grid {
+grid-template-columns: 1fr !important;
+gap: 16px;
+}
+
+/* Admin panel adjustments */
+#adminPanel .btn-enhanced-action {
+font-size: 0.9rem;
+padding: 12px 16px;
+}
+
+/* Alert banners */
+.alert-banner {
+padding: 12px 14px;
+font-size: 0.9rem;
+}
+
+/* Recommendation lists */
+.recommendation-list li {
+padding: 10px;
+padding-left: 2rem;
+font-size: 0.9rem;
+}
+
+/* Loading states */
+.loading {
+padding: 2rem 1rem;
+}
+
+.spinner, .spinner-enhanced {
+width: 40px;
+height: 40px;
+
+}
+}
+@media (max-width: 768px) {
+/* Remove old music control styles */
+#musicControl {
+display: none !important;
+}
+
+/* Floating music button */
+#musicFloatingBtn {
+width: 56px !important;
+height: 56px !important;
+bottom: 20px !important;
+right: 20px !important;
+box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
+}
+
+#musicFloatingBtn:active {
+transform: scale(0.9) !important;
+}
+
+/* Music panel */
+#musicPanel {
+width: 95% !important;
+max-width: none !important;
+padding: 16px !important;
+}
+
+/* Make sure content is scrollable */
+.container {
+padding-bottom: 100px; /* Space for floating button */
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+}
+
+/* Better button spacing on mobile */
+.dashboard-header {
+margin-bottom: 20px;
+}
+}
+/* Extra small devices (phones < 375px) */
+@media (max-width: 374px) {
+h1 {
+font-size: 2rem !important;
+}
+
+#currentWeather .big-temp {
+font-size: 3rem !important;
+}
+
+#currentWeather .desc {
+font-size: 1.1rem !important;
+}
+
+.card {
+padding: 12px;
+}
+
+button {
+padding: 12px 16px;
+font-size: 0.9rem;
+}
+
+.enhanced-period-btn {
+padding: 8px 10px;
+font-size: 0.8rem;
+}
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+.start-screen {
+min-height: auto;
+padding: 30px 20px;
+}
+
+.auth-container {
+min-height: auto;
+padding: 20px;
+}
+
+#musicControl {
+bottom: 4px;
+left: 4px;
+right: 4px;
+}
+
+.dashboard-header {
+flex-direction: row;
+flex-wrap: wrap;
+}
+}
+
+/* Smooth animations */
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes slideInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes bounceIn {
+0% {
+opacity: 0;
+transform: scale(0.3);
+}
+50% {
+opacity: 1;
+transform: scale(1.05);
+}
+70% {
+transform: scale(0.9);
+}
+100% {
+transform: scale(1);
+}
+}
+
+/* Pull-to-refresh hint (visual only) */
+@media (max-width: 768px) {
+.container::before {
+content: '';
+position: absolute;
+top: -50px;
+left: 50%;
+transform: translateX(-50%);
+width: 40px;
+height: 40px;
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+}
+
+/* Extra small devices (phones, less than 375px) */
+@media (max-width: 374px) {
+h1 {
+font-size: 2rem !important;
+}
+
+#currentWeather .big-temp {
+font-size: 3rem !important;
+}
+
+#currentWeather .desc {
+font-size: 1.2rem !important;
+}
+
+.card {
+padding: 12px;
+}
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+.start-screen {
+min-height: auto;
+padding: 40px 20px;
+}
+
+.auth-container {
+min-height: auto;
+padding: 20px;
+}
+
+#musicControl {
+bottom: 4px;
+}
+}
+
+/* Touch-specific improvements */
+@media (pointer: coarse) {
+/* Larger touch targets */
+button, a, input, select, .period-btn {
+min-height: 48px;
+}
+
+/* Better hover states (tap feedback) */
+button:active, a:active {
+transform: scale(0.97);
+opacity: 0.8;
+}
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+--bg: #0a0f1e;
+--bg-light: #0f172a;
+--panel: #1e293b;
+--text: #f1f5f9;
+--text-muted: #94a3b8;
+--primary: #22c55e;
+--primary-dark: #16a34a;
+--primary-light: #4ade80;
+--border: #334155;
+--danger: #ef4444;
+--warning: #f59e0b;
+--info: #3b82f6;
+--shadow: rgba(0, 0, 0, 0.3);
+}
+
+body {
+font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+background: linear-gradient(135deg, #0a0f1e 0%, #1e293b 100%);
+color: var(--text);
+min-height: 100vh;
+line-height: 1.6;
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+}
+
+.location-actions {
+display: flex;
+gap: 12px;
+align-items: center;
+justify-content: space-between;
+margin-top: 12px;
+flex-wrap: wrap;
+}
+.location-actions .left {
+flex: 1 1 auto;
+}
+.location-actions .right {
+flex: 0 0 auto;
+}
+
+.screen {
+display: none;
+animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+display: block;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.start-screen {
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+background: radial-gradient(circle at 30% 20%, rgba(34, 197, 94, 0.1), transparent 50%),
+radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.1), transparent 50%);
+}
+
+.logo {
+font-size: 4rem;
+margin-bottom: 1rem;
+}
+
+h1 {
+font-size: 3rem;
+margin-bottom: 0.5rem;
+background: linear-gradient(135deg, var(--primary), var(--primary-light));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.tagline {
+font-size: 1.2rem;
+color: var(--text-muted);
+margin-bottom: 3rem;
+}
+
+.button-group {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+justify-content: center;
+}
+
+button {
+padding: 14px 32px;
+font-size: 1rem;
+font-weight: 600;
+border: none;
+border-radius: 12px;
+cursor: pointer;
+transition: all 0.3s ease;
+min-width: 140px;
+}
+
+.btn-primary {
+background: var(--primary);
+color: #0a1810;
+}
+
+.btn-primary:hover {
+background: var(--primary-light);
+transform: translateY(-2px);
+box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+}
+
+.btn-secondary {
+background: var(--panel);
+color: var(--text);
+border: 2px solid var(--border);
+}
+
+.btn-secondary:hover {
+background: var(--bg-light);
+border-color: var(--primary);
+}
+
+.btn-small {
+padding: 8px 16px;
+font-size: 0.9rem;
+min-width: auto;
+}
+
+.auth-container {
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.auth-box {
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 20px;
+padding: 40px;
+max-width: 500px;
+width: 100%;
+box-shadow: 0 20px 60px var(--shadow);
+}
+
+.auth-box h2 {
+font-size: 2rem;
+margin-bottom: 0.5rem;
+color: var(--primary);
+}
+
+.auth-box p {
+color: var(--text-muted);
+margin-bottom: 2rem;
+}
+
+.form-group {
+margin-bottom: 1.5rem;
+}
+
+.form-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+}
+
+label {
+display: block;
+margin-bottom: 0.5rem;
+font-weight: 500;
+font-size: 0.9rem;
+}
+
+input, select {
+width: 100%;
+padding: 12px 16px;
+background: var(--bg-light);
+border: 1px solid var(--border);
+border-radius: 10px;
+color: var(--text);
+font-size: 1rem;
+transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+outline: none;
+border-color: var(--primary);
+}
+
+.error-message {
+color: var(--danger);
+font-size: 0.9rem;
+margin-top: 0.5rem;
+}
+
+.success-message {
+color: var(--primary);
+font-size: 0.9rem;
+margin-top: 0.5rem;
+}
+
+.dashboard-header {
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 24px;
+margin-bottom: 24px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 1rem;
+}
+
+.welcome-text h2 {
+font-size: 1.8rem;
+color: var(--primary);
+margin-bottom: 0.3rem;
+}
+
+.welcome-text p {
+color: var(--text-muted);
+}
+
+.dashboard-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 20px;
+margin-bottom: 24px;
+}
+
+.card {
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 24px;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+transform: translateY(-4px);
+box-shadow: 0 12px 30px var(--shadow);
+}
+
+.card h3 {
+font-size: 1.3rem;
+margin-bottom: 1rem;
+color: var(--primary-light);
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.weather-icon {
+font-size: 3rem;
+margin: 1rem 0;
+}
+
+.weather-main {
+font-size: 2.5rem;
+font-weight: bold;
+margin: 0.5rem 0;
+}
+
+.weather-details {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+margin-top: 1rem;
+}
+
+.detail-item {
+background: var(--bg-light);
+padding: 12px;
+border-radius: 10px;
+}
+
+.detail-label {
+font-size: 0.85rem;
+color: var(--text-muted);
+margin-bottom: 0.3rem;
+}
+
+.detail-value {
+font-size: 1.2rem;
+font-weight: 600;
+color: var(--primary-light);
+}
+
+.prediction-controls {
+display: flex;
+gap: 1rem;
+margin-bottom: 1.5rem;
+flex-wrap: wrap;
+}
+
+.period-buttons {
+display: flex;
+gap: 0.5rem;
+background: var(--bg-light);
+padding: 4px;
+border-radius: 10px;
+}
+
+.period-btn {
+padding: 8px 16px;
+background: transparent;
+color: var(--text-muted);
+border: none;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.3s ease;
+font-weight: 500;
+}
+
+.period-btn.active {
+background: var(--primary);
+color: #0a1810;
+}
+
+.forecast-list {
+display: grid;
+gap: 0.75rem;
+}
+
+.forecast-item {
+background: var(--bg-light);
+padding: 16px;
+border-radius: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.forecast-date {
+font-weight: 600;
+}
+
+.forecast-values {
+display: flex;
+gap: 2rem;
+color: var(--text-muted);
+}
+
+.alert-banner {
+padding: 12px 16px;
+border-radius: 10px;
+margin-bottom: 1rem;
+font-weight: 500;
+}
+
+.alert-info {
+background: rgba(59, 130, 246, 0.1);
+border-left: 4px solid var(--info);
+color: var(--info);
+}
+
+.alert-warning {
+background: rgba(245, 158, 11, 0.1);
+border-left: 4px solid var(--warning);
+color: var(--warning);
+}
+
+.alert-danger {
+background: rgba(239, 68, 68, 0.1);
+border-left: 4px solid var(--danger);
+color: var(--danger);
+}
+
+.alert-success {
+background: rgba(34, 197, 94, 0.1);
+border-left: 4px solid var(--primary);
+color: var(--primary);
+}
+
+.recommendation-list {
+list-style: none;
+padding: 0;
+}
+
+.recommendation-list li {
+padding: 12px;
+margin-bottom: 0.5rem;
+background: var(--bg-light);
+border-radius: 8px;
+padding-left: 2.5rem;
+position: relative;
+}
+
+.recommendation-list li:before {
+content: "🌱";
+position: absolute;
+left: 12px;
+top: 12px;
+}
+
+.activity-list {
+list-style: none;
+padding: 0;
+}
+
+.activity-list li {
+padding: 10px;
+margin-bottom: 0.5rem;
+background: rgba(34, 197, 94, 0.05);
+border-left: 3px solid var(--primary);
+border-radius: 6px;
+}
+
+.loading {
+text-align: center;
+padding: 3rem;
+color: var(--text-muted);
+}
+
+.spinner {
+border: 3px solid var(--border);
+border-top: 3px solid var(--primary);
+border-radius: 50%;
+width: 40px;
+height: 40px;
+animation: spin 1s linear infinite;
+margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+#currentWeather {
+background: transparent;
+padding: 12px 6px;
+color: var(--text);
+}
+
+#currentWeather .top-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 6px 2px;
+}
+#currentWeather .location-label {
+font-weight: 700;
+font-size: 1.05rem;
+color: var(--text);
+}
+#currentWeather .small-temp {
+font-weight: 600;
+font-size: 1.05rem;
+color: var(--text);
+}
+
+#currentWeather .divider {
+height: 1px;
+background: var(--border);
+margin: 8px 0 14px 0;
+opacity: 0.9;
+}
+
+#currentWeather .main-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 6px 2px;
+}
+#currentWeather .big-temp {
+font-size: 6.5rem;
+font-weight: 700;
+line-height: 1;
+color: var(--text);
+letter-spacing: -2px;
+}
+#currentWeather .deg-faint {
+color: rgba(255,255,255,0.18);
+font-weight: 700;
+margin-left: 6px;
+}
+#currentWeather .desc {
+font-size: 2.4rem;
+font-weight: 600;
+color: var(--text);
+text-align: right;
+}
+
+#currentWeather .days-header {
+display:flex;
+gap:12px;
+padding:8px 2px;
+color:var(--text-muted);
+font-size:0.95rem;
+align-items:center;
+overflow-x:auto;
+}
+#currentWeather .days-header .day-chip {
+min-width: 110px;
+text-align:left;
+color:var(--text-muted);
+}
+
+#currentWeather .hourly-row {
+display: flex;
+gap: 14px;
+overflow-x: auto;
+padding: 16px 2px;
+align-items: center;
+}
+#currentWeather .hour-item {
+min-width: 70px;
+text-align: center;
+color: var(--text-muted);
+font-size: 0.85rem;
+}
+#currentWeather .hour-item .icon {
+font-size: 1.6rem;
+margin: 6px 0;
+color: var(--text);
+}
+#currentWeather .hour-item .hour-temp {
+margin-top: 6px;
+font-weight: 600;
+color: var(--text);
+}
+
+#currentWeather .daily-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 6px;
+padding: 12px 2px;
+align-items: center;
+border-top: 1px dashed var(--border);
+margin-top: 8px;
+}
+#currentWeather .daily-cell {
+text-align: center;
+color: var(--text-muted);
+font-size: 0.9rem;
+}
+#currentWeather .daily-cell .day-icon {
+font-size: 1.35rem;
+margin: 8px 0;
+color: var(--text);
+}
+#currentWeather .daily-cell .day-temp {
+font-weight: 700;
+color: var(--text);
+margin: 6px 0;
+}
+
+#currentWeather .metrics-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+padding: 18px 2px 2px 2px;
+}
+#currentWeather .metric {
+text-align: center;
+color: var(--text-muted);
+font-size: 0.9rem;
+}
+#currentWeather .metric .metric-value {
+display: block;
+font-weight: 700;
+color: var(--text);
+margin-bottom: 6px;
+font-size: 1.05rem;
+}
+
+#musicControl {
+position: fixed;
+bottom: 18px;
+right: 18px;
+z-index: 9999;
+display: flex;
+gap: 8px;
+align-items: center;
+background: rgba(30,41,59,0.9);
+padding: 8px;
+border-radius: 12px;
+border: 1px solid var(--border);
+box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+#musicControl .btn-small {
+padding: 8px 12px;
+font-size: 0.85rem;
+border-radius: 8px;
+}
+#musicVolume {
+width: 120px;
+accent-color: var(--primary);
+}
+
+@media (max-width: 768px) {
+#currentWeather .big-temp { font-size: 5rem; }
+#currentWeather .desc { font-size: 1.6rem; }
+.form-row { grid-template-columns: 1fr; }
+.dashboard-grid { grid-template-columns: 1fr; }
+.weather-details { grid-template-columns: 1fr; }
+.forecast-values { flex-direction: column; gap: 0.5rem; }
+#currentWeather .daily-grid { grid-template-columns: repeat(3, 1fr); }
+#musicControl { right: 12px; left: 12px; justify-content: center; bottom: 12px; }
+.location-actions { flex-direction: column; align-items: stretch; gap: 8px; }
+.location-actions .right { text-align: right; }
+}
+
+
+@media (max-width: 768px) {
+h1 { font-size: 2rem; }
+.tagline { font-size: 1rem; }
+.form-row { grid-template-columns: 1fr; }
+.dashboard-grid { grid-template-columns: 1fr; }
+.weather-details { grid-template-columns: 1fr; }
+.forecast-values { flex-direction: column; gap: 0.5rem; }
+}
+
+/* NOTIFICATION STYLES */
+.notification-panel {
+position: fixed;
+top: 0;
+right: -400px;
+width: 400px;
+height: 100vh;
+background: var(--panel);
+border-left: 1px solid var(--border);
+box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+z-index: 10000;
+transition: right 0.3s ease;
+display: flex;
+flex-direction: column;
+}
+
+.notification-panel.open {
+right: 0;
+}
+
+.notification-header {
+padding: 20px;
+border-bottom: 1px solid var(--border);
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: var(--bg-light);
+}
+
+.notification-list {
+flex: 1;
+overflow-y: auto;
+padding: 16px;
+}
+
+.notification-item {
+background: var(--bg-light);
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 16px;
+margin-bottom: 12px;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+}
+
+.notification-item:hover {
+background: var(--panel);
+border-color: var(--primary);
+transform: translateX(-4px);
+box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.notification-item.unread {
+border-left: 4px solid var(--primary);
+background: rgba(34, 197, 94, 0.08);
+font-weight: 500;
+}
+
+.notification-item.unread::after {
+content: '';
+position: absolute;
+top: 16px;
+right: 16px;
+width: 10px;
+height: 10px;
+background: var(--primary);
+border-radius: 50%;
+box-shadow: 0 0 10px var(--primary);
+animation: notifPulse 2s ease infinite;
+}
+
+/* When notification is read, animate it */
+.notification-item.read {
+animation: fadeToRead 0.5s ease forwards;
+}
+
+@keyframes fadeToRead {
+from {
+background: rgba(34, 197, 94, 0.08);
+border-left-color: var(--primary);
+}
+to {
+background: var(--bg-light);
+border-left-color: var(--border);
+}
+}
+
+@keyframes notifPulse {
+0%, 100% {
+transform: scale(1);
+opacity: 1;
+}
+50% {
+transform: scale(1.15);
+opacity: 0.7;
+}
+}
+
+.notification-title {
+font-weight: 600;
+font-size: 1rem;
+margin-bottom: 8px;
+color: var(--text);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.notification-message {
+font-size: 0.9rem;
+color: var(--text-muted);
+line-height: 1.5;
+margin-bottom: 8px;
+}
+
+.notification-time {
+font-size: 0.75rem;
+color: var(--text-muted);
+opacity: 0.8;
+margin-top: 8px;
+display: flex;
+align-items: center;
+gap: 4px;
+}
+
+.notification-time::before {
+content: '🕐';
+font-size: 0.85rem;
+}
+
+.notification-type-info { border-left-color: var(--info); }
+.notification-type-warning { border-left-color: var(--warning); }
+.notification-type-alert { border-left-color: var(--danger); }
+.notification-type-success { border-left-color: var(--primary); }
+
+.empty-notifications {
+text-align: center;
+padding: 3rem 1.5rem;
+color: var(--text-muted);
+}
+
+.empty-notifications-icon {
+font-size: 4rem;
+margin-bottom: 1rem;
+opacity: 0.5;
+}
+
+.notif-badge {
+display: none;
+position: absolute;
+top: -4px;
+right: -4px;
+background: var(--danger);
+color: white;
+border-radius: 50%;
+width: 18px;
+height: 18px;
+font-size: 0.7rem;
+font-weight: bold;
+align-items: center;
+justify-content: center;
+animation: badgePulse 2s ease infinite;
+box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+}
+
+.notif-badge.show {
+display: flex;
+}
+
+@keyframes badgePulse {
+0%, 100% {
+transform: scale(1);
+box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+}
+50% {
+transform: scale(1.1);
+box-shadow: 0 0 0 4px rgba(239, 68, 68, 0);
+}
+}
+
+@media (max-width: 768px) {
+.notification-panel {
+width: 100%;
+right: -100%;
+}
+}
+</style>
+</head>
+<body>
+
+<!-- Start Screen -->
+<div id="startScreen" class="screen">
+<div class="start-screen">
+<!-- Animated Background Elements -->
+<div class="bg-elements">
+<div class="floating-element" style="top: 10%; left: 5%; animation-delay: 0s;">🌾</div>
+<div class="floating-element" style="top: 20%; right: 10%; animation-delay: 1s;">☀️</div>
+<div class="floating-element" style="bottom: 15%; left: 15%; animation-delay: 2s;">💧</div>
+<div class="floating-element" style="top: 60%; right: 20%; animation-delay: 1.5s;">🌱</div>
+<div class="floating-element" style="bottom: 25%; right: 5%; animation-delay: 2.5s;">🌤️</div>
+
+<!-- Gradient Orbs -->
+<div class="gradient-orb" style="top: 20%; left: 10%;"></div>
+<div class="gradient-orb" style="bottom: 30%; right: 15%;"></div>
+</div>
+
+<!-- Main Content -->
+<div style="position: relative; z-index: 10;">
+<!-- Animated Logo -->
+<div class="logo enhanced-logo">
+<div class="logo-glow"></div>
+🌾
+</div>
+
+<!-- Title with Gradient Animation -->
+<h1 class="animated-title">
+<span class="letter" style="animation-delay: 0.1s;">A</span>
+<span class="letter" style="animation-delay: 0.2s;">g</span>
+<span class="letter" style="animation-delay: 0.3s;">r</span>
+<span class="letter" style="animation-delay: 0.4s;">o</span>
+<span class="letter" style="animation-delay: 0.5s;">W</span>
+<span class="letter" style="animation-delay: 0.6s;">e</span>
+<span class="letter" style="animation-delay: 0.7s;">a</span>
+<span class="letter" style="animation-delay: 0.8s;">t</span>
+<span class="letter" style="animation-delay: 0.9s;">h</span>
+<span class="letter" style="animation-delay: 1s;">e</span>
+<span class="letter" style="animation-delay: 1.1s;">r</span>
+</h1>
+
+<!-- Animated Divider -->
+<div class="decorative-line"></div>
+
+<!-- Tagline with Typewriter Effect -->
+<p class="tagline enhanced-tagline">
+<span class="typewriter">Smart Weather Insights for Modern Farmers</span>
+</p>
+
+<!-- Feature Highlights -->
+<div class="feature-pills">
+<div class="pill" style="animation-delay: 1.2s;">
+<span>🌥️</span>
+<span>Weather</span>
+</div>
+<div class="pill" style="animation-delay: 1.4s;">
+<span>📊</span>
+<span>Predictions</span>
+</div>
+<div class="pill" style="animation-delay: 1.6s;">
+<span>💡</span>
+<span>Smart Advice</span>
+</div>
+</div>
+
+<!-- Enhanced Button Group -->
+<div class="button-group enhanced-button-group">
+<button class="btn-primary enhanced-btn" onclick="showScreen('loginScreen')">
+<span class="btn-content">
+<span class="btn-icon">➜]</span>
+<span>Log In</span>
+</span>
+<span class="btn-shimmer"></span>
+</button>
+<button class="btn-secondary enhanced-btn" onclick="showScreen('signupScreen')">
+<span class="btn-content">
+<span class="btn-icon">✨</span>
+<span>Sign Up</span>
+</span>
+<span class="btn-shimmer"></span>
+</button>
+</div>
+
+<!-- Stats Section -->
+<div class="stats-section">
+<div class="stat-item" style="animation-delay: 1.8s;">
+<div class="stat-number">24/7</div>
+<div class="stat-label">Monitoring</div>
+</div>
+<div class="stat-divider"></div>
+<div class="stat-item" style="animation-delay: 2s;">
+<div class="stat-number">95%</div>
+<div class="stat-label">Accuracy</div>
+</div>
+<div class="stat-divider"></div>
+<div class="stat-item" style="animation-delay: 2.2s;">
+<div class="stat-number">Free</div>
+<div class="stat-label">Forever</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<style>
+/* Background Elements */
+.bg-elements {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+overflow: hidden;
+pointer-events: none;
+}
+
+.floating-element {
+position: absolute;
+font-size: 2.5rem;
+opacity: 0.15;
+animation: floatAround 15s ease-in-out infinite;
+}
+
+@keyframes floatAround {
+0%, 100% {
+transform: translate(0, 0) rotate(0deg);
+}
+25% {
+transform: translate(20px, -20px) rotate(90deg);
+}
+50% {
+transform: translate(-15px, 15px) rotate(180deg);
+}
+75% {
+transform: translate(15px, 25px) rotate(270deg);
+}
+}
+
+.gradient-orb {
+position: absolute;
+width: 400px;
+height: 400px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(34, 197, 94, 0.08), transparent 70%);
+filter: blur(40px);
+animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+0%, 100% {
+transform: scale(1);
+opacity: 0.3;
+}
+50% {
+transform: scale(1.2);
+opacity: 0.5;
+}
+}
+
+/* Enhanced Logo */
+.enhanced-logo {
+position: relative;
+animation: logoEntrance 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes logoEntrance {
+0% {
+transform: scale(0) rotate(-180deg);
+opacity: 0;
+}
+100% {
+transform: scale(1) rotate(0deg);
+opacity: 1;
+}
+}
+
+.logo-glow {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 120%;
+height: 120%;
+background: radial-gradient(circle, rgba(34, 197, 94, 0.4), transparent 70%);
+border-radius: 50%;
+animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+0%, 100% {
+transform: translate(-50%, -50%) scale(1);
+opacity: 0.4;
+}
+50% {
+transform: translate(-50%, -50%) scale(1.3);
+opacity: 0.7;
+}
+}
+
+/* Animated Title */
+.animated-title {
+display: flex;
+justify-content: center;
+gap: 0.1em;
+margin-bottom: 1.5rem;
+}
+
+.letter {
+display: inline-block;
+animation: letterPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+.letter:hover {
+animation: letterBounce 0.6s ease;
+color: var(--primary-light);
+}
+
+@keyframes letterPop {
+0% {
+transform: translateY(30px) scale(0);
+opacity: 0;
+}
+100% {
+transform: translateY(0) scale(1);
+opacity: 1;
+}
+}
+
+@keyframes letterBounce {
+0%, 100% {
+transform: translateY(0);
+}
+50% {
+transform: translateY(-10px);
+}
+}
+
+/* Decorative Line */
+.decorative-line {
+height: 3px;
+width: 0;
+max-width: 200px;
+margin: 0 auto 2rem;
+background: linear-gradient(90deg, transparent, var(--primary), var(--primary-light), transparent);
+border-radius: 2px;
+animation: expandLine 1.5s ease-out 0.5s forwards;
+box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+}
+
+@keyframes expandLine {
+to {
+width: 200px;
+}
+}
+
+/* Enhanced Tagline */
+.enhanced-tagline {
+opacity: 0;
+animation: fadeInUp 1s ease-out 1s forwards;
+}
+
+.typewriter {
+display: inline-block;
+overflow: hidden;
+border-right: 2px solid var(--primary);
+white-space: nowrap;
+animation: typing 3s steps(40) 1.2s forwards, blink 0.75s step-end infinite;
+max-width: 0;
+}
+
+@keyframes typing {
+to {
+max-width: 100%;
+}
+}
+
+@keyframes blink {
+50% {
+border-color: transparent;
+}
+}
+
+/* Feature Pills */
+.feature-pills {
+display: flex;
+gap: 1rem;
+justify-content: center;
+flex-wrap: wrap;
+margin: 2rem 0;
+}
+
+.pill {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+padding: 10px 20px;
+background: rgba(30, 41, 59, 0.6);
+border: 1px solid var(--border);
+border-radius: 30px;
+font-size: 0.9rem;
+opacity: 0;
+animation: slideInUp 0.6s ease-out forwards;
+backdrop-filter: blur(10px);
+transition: all 0.3s ease;
+}
+
+.pill:hover {
+transform: translateY(-5px);
+border-color: var(--primary);
+background: rgba(34, 197, 94, 0.1);
+box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+}
+
+@keyframes slideInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Enhanced Buttons */
+.enhanced-button-group {
+animation: fadeInUp 0.8s ease-out 1.5s backwards;
+}
+
+.enhanced-btn {
+position: relative;
+overflow: hidden;
+transform-style: preserve-3d;
+}
+
+.btn-content {
+position: relative;
+z-index: 2;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.btn-icon {
+font-size: 1.2rem;
+transition: transform 0.3s ease;
+}
+
+.enhanced-btn:hover .btn-icon {
+transform: scale(1.2) rotate(10deg);
+}
+
+.btn-shimmer {
+position: absolute;
+top: -50%;
+left: -100%;
+width: 100%;
+height: 200%;
+background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+transform: skewX(-20deg);
+transition: left 0.6s ease;
+}
+
+.enhanced-btn:hover .btn-shimmer {
+left: 200%;
+}
+
+.enhanced-btn:active {
+transform: scale(0.95);
+}
+
+/* Stats Section */
+.stats-section {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 2rem;
+margin-top: 3rem;
+padding: 1.5rem;
+background: rgba(30, 41, 59, 0.3);
+border: 1px solid var(--border);
+border-radius: 20px;
+max-width: 600px;
+margin-left: auto;
+margin-right: auto;
+backdrop-filter: blur(10px);
+}
+
+.stat-item {
+text-align: center;
+opacity: 0;
+animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stat-number {
+font-size: 2rem;
+font-weight: 700;
+background: linear-gradient(135deg, var(--primary), var(--primary-light));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 0.3rem;
+}
+
+.stat-label {
+font-size: 0.85rem;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+.stat-divider {
+width: 1px;
+height: 40px;
+background: linear-gradient(180deg, transparent, var(--border), transparent);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.floating-element {
+font-size: 1.5rem;
+}
+
+.gradient-orb {
+width: 250px;
+height: 250px;
+}
+
+.feature-pills {
+gap: 0.5rem;
+}
+
+.pill {
+padding: 8px 16px;
+font-size: 0.85rem;
+}
+
+.stats-section {
+flex-direction: column;
+gap: 1rem;
+padding: 1rem;
+}
+
+.stat-divider {
+width: 60px;
+height: 1px;
+background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.animated-title {
+font-size: 2.5rem;
+}
+}
+
+@media (max-width: 768px) {
+
+/* Make the right side full width on mobile */
+.dashboard-header > div:last-child {
+align-items: stretch !important;
+width: 100%;
+}
+
+/* Make user profile card full width */
+.user-profile-card {
+width: 100% !important;
+justify-content: space-between !important;
+}
+
+/* Stack buttons vertically on mobile */
+.dashboard-header .btn-small {
+flex: 1;
+justify-content: center;
+min-width: 0;
+padding: 12px 8px;
+font-size: 0.85rem;
+}
+
+/* Make button container wrap nicely */
+.dashboard-header > div:last-child > div:last-child {
+flex-wrap: wrap;
+gap: 8px;
+width: 100%;
+}
+
+/* Choose ONE of these options: */
+
+/* OPTION A: 2 buttons per row (recommended for mobile) */
+/*.dashboard-header .btn-small {
+flex: 1 1 calc(50% - 4px);
+}
+
+/* OPTION B: 3 buttons in one row (uncomment if you prefer this) */
+.dashboard-header .btn-small {
+flex: 1 1 calc(33.33% - 6px);
+}
+}
+</style>
+
+<!-- Welcome Page -->
+<div id="welcomePage" class="screen active" onclick="showScreen('startScreen')" style="cursor: pointer; position: relative; overflow: hidden;">
+<div class="start-screen">
+<!-- Animated background particles -->
+<div class="particles">
+<div class="particle" style="left: 10%; animation-delay: 0s;">🌾</div>
+<div class="particle" style="left: 20%; animation-delay: 0.5s;">☀️</div>
+<div class="particle" style="left: 30%; animation-delay: 1s;">💧</div>
+<div class="particle" style="left: 40%; animation-delay: 1.5s;">🌱</div>
+<div class="particle" style="left: 50%; animation-delay: 2s;">🌤️</div>
+<div class="particle" style="left: 60%; animation-delay: 2.5s;">🌾</div>
+<div class="particle" style="left: 70%; animation-delay: 3s;">🍃</div>
+<div class="particle" style="left: 80%; animation-delay: 3.5s;">☁️</div>
+<div class="particle" style="left: 90%; animation-delay: 4s;">🌻</div>
+<div class="particle" style="left: 100%; animation-delay: 4.5s;">🌈</div>
+</div>
+
+<!-- Main content -->
+<div style="position: relative; z-index: 2;">
+<div class="logo" style="font-size: 7rem; animation: pulseGlow 3s ease-in-out infinite; filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.5));">🌾</div>
+<h1 style="font-size: 4.5rem; margin-bottom: 1rem; animation: slideInDown 1s ease-out; letter-spacing: 4px;">AgroWeather</h1>
+<div style="height: 3px; width: 200px; background: linear-gradient(90deg, transparent, var(--primary), transparent); margin: 1.5rem auto; animation: expandWidth 1.5s ease-out;"></div>
+<p class="tagline" style="font-size: 1.2rem; margin-top: 2rem; animation: fadeInUp 1.5s ease-in; opacity: 0; animation-fill-mode: forwards; animation-delay: 0.5s; font-style: italic;">
+Click to Register
+</p>
+
+<!-- Subtle click indicator -->
+<div style="margin-top: 3rem; animation: bounce 2s ease-in-out infinite; font-size: 2rem; opacity: 0.6;">
+↓
+</div>
+</div>
+</div>
+</div>
+
+<style>
+/* Enhanced pulse with glow effect */
+@keyframes pulseGlow {
+0%, 100% {
+transform: scale(1) rotate(0deg);
+filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.5));
+}
+25% {
+transform: scale(1.1) rotate(-5deg);
+filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.8));
+}
+75% {
+transform: scale(1.1) rotate(5deg);
+filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.8));
+}
+}
+
+/* Slide in from top */
+@keyframes slideInDown {
+from {
+opacity: 0;
+transform: translateY(-50px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Fade in from bottom */
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Expand line width */
+@keyframes expandWidth {
+from {
+width: 0;
+opacity: 0;
+}
+to {
+width: 200px;
+opacity: 1;
+}
+}
+
+/* Bounce indicator */
+@keyframes bounce {
+0%, 100% {
+transform: translateY(0);
+opacity: 0.6;
+}
+50% {
+transform: translateY(15px);
+opacity: 0.3;
+}
+}
+
+/* Floating particles */
+.particles {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 1;
+}
+
+.particle {
+position: absolute;
+font-size: 2rem;
+opacity: 0.3;
+animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+0%, 100% {
+transform: translateY(100vh) rotate(0deg);
+opacity: 0;
+}
+10% {
+opacity: 0.3;
+}
+90% {
+opacity: 0.3;
+}
+100% {
+transform: translateY(-100px) rotate(360deg);
+opacity: 0;
+}
+}
+
+/* Hover effect on welcome screen */
+#welcomePage:hover .logo {
+animation: pulseGlow 1s ease-in-out infinite !important;
+}
+
+#welcomePage:hover h1 {
+color: var(--primary-light);
+transition: color 0.3s ease;
+}
+</style>
+
+<!-- Sign Up Screen -->
+<div id="signupScreen" class="screen">
+<div class="auth-container">
+<div class="auth-box enhanced-auth-box">
+<!-- Header with icon -->
+<div style="text-align: center; margin-bottom: 2rem;">
+<div style="font-size: 3.5rem; margin-bottom: 1rem; animation: fadeInScale 0.6s ease-out;">🌾</div>
+<h2 style="animation: slideInFromLeft 0.6s ease-out;">Create Account</h2>
+<p style="animation: slideInFromRight 0.6s ease-out;">Join AgroWeather to get personalized farming insights</p>
+</div>
+
+<form id="signupForm" onsubmit="handleSignup(event)">
+<!-- Full Name with icon -->
+<div class="form-group animated-input" style="animation-delay: 0.1s;">
+<label>👤 Full Name *</label>
+<input type="text" id="signup_name" required minlength="2" placeholder="Juan Dela Cruz" class="input-enhanced">
+</div>
+
+<!-- Age and Gender Row -->
+<div class="form-row">
+<div class="form-group animated-input" style="animation-delay: 0.2s;">
+<label>🎂 Age *</label>
+<input type="number" id="signup_age" required min="18" max="120" placeholder="25" class="input-enhanced">
+</div>
+
+<div class="form-group animated-input" style="animation-delay: 0.25s;">
+<label>⚧️ Gender *</label>
+<select id="signup_gender" required class="input-enhanced">
+<option value="">Select Gender</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+<option value="Other">Other</option>
+</select>
+</div>
+</div>
+
+<!-- Location with icon -->
+<div class="form-group animated-input" style="animation-delay: 0.3s;">
+<label>📍 Location *</label>
+<input type="text" id="signup_location" required placeholder="Tandag City, Surigao del Sur" class="input-enhanced">
+</div>
+
+<!-- Username with icon -->
+<div class="form-group animated-input" style="animation-delay: 0.35s;">
+<label>🔑 Username *</label>
+<input type="text" id="signup_username" required minlength="3" placeholder="farmer123" class="input-enhanced">
+</div>
+
+<!-- Password with icon and strength indicator -->
+<div class="form-group animated-input" style="animation-delay: 0.4s;">
+<label>🔒 Password *</label>
+<div style="position: relative;">
+<input type="password" id="signup_password" required minlength="6" placeholder="••••••••" class="input-enhanced" oninput="checkPasswordStrength()">
+<span id="togglePassword1" onclick="togglePasswordVisibility('signup_password', 'togglePassword1')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem;">👁️</span>
+</div>
+<div id="passwordStrength" style="height: 4px; border-radius: 2px; margin-top: 6px; background: var(--border); overflow: hidden;">
+<div id="strengthBar" style="height: 100%; width: 0%; transition: all 0.3s ease; background: var(--danger);"></div>
+</div>
+<small id="strengthText" style="color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; display: block;"></small>
+</div>
+
+<!-- Confirm Password with icon -->
+<div class="form-group animated-input" style="animation-delay: 0.45s;">
+<label>🔒 Confirm Password *</label>
+<div style="position: relative;">
+<input type="password" id="signup_confirm" required minlength="6" placeholder="••••••••" class="input-enhanced" oninput="checkPasswordMatch()">
+<span id="togglePassword2" onclick="togglePasswordVisibility('signup_confirm', 'togglePassword2')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem;">👁️</span>
+</div>
+<small id="matchText" style="color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; display: block;"></small>
+</div>
+
+<div id="signupError" class="error-message"></div>
+
+<!-- Submit Button -->
+<div class="form-group animated-input" style="animation-delay: 0.5s;">
+<button type="submit" class="btn-primary btn-enhanced" style="width: 100%;">
+<span>Create Account</span>
+<span style="margin-left: 8px;">→</span>
+</button>
+</div>
+</form>
+
+<!-- Footer -->
+<div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); animation: fadeIn 1s ease-in;">
+<p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Already have an account?</p>
+<button class="btn-secondary btn-small" onclick="showScreen('loginScreen')" style="margin-right: 8px;">Log In</button>
+<button class="btn-secondary btn-small" onclick="showScreen('startScreen')">Back</button>
+</div>
+</div>
+</div>
+</div>
+
+<style>
+/* Enhanced Auth Box */
+.enhanced-auth-box {
+animation: slideUpFade 0.6s ease-out;
+}
+
+/* Animated Inputs */
+.animated-input {
+animation: slideInFromLeft 0.5s ease-out backwards;
+}
+
+/* Enhanced Input Styles */
+.input-enhanced {
+transition: all 0.3s ease;
+}
+
+.input-enhanced:focus {
+border-color: var(--primary) !important;
+box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+transform: translateY(-2px);
+}
+
+.input-enhanced:hover {
+border-color: var(--primary-dark);
+}
+
+/* Enhanced Button */
+.btn-enhanced {
+position: relative;
+overflow: hidden;
+transition: all 0.3s ease;
+}
+
+.btn-enhanced:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+}
+
+.btn-enhanced:active {
+transform: translateY(0);
+}
+
+.btn-enhanced::before {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 0;
+height: 0;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.3);
+transform: translate(-50%, -50%);
+transition: width 0.6s, height 0.6s;
+}
+
+.btn-enhanced:hover::before {
+width: 300px;
+height: 300px;
+}
+
+/* Animations */
+@keyframes fadeInScale {
+from {
+opacity: 0;
+transform: scale(0.5);
+}
+to {
+opacity: 1;
+transform: scale(1);
+}
+}
+
+@keyframes slideInFromLeft {
+from {
+opacity: 0;
+transform: translateX(-30px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes slideInFromRight {
+from {
+opacity: 0;
+transform: translateX(30px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes slideUpFade {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Password Strength Colors */
+.strength-weak { background: var(--danger) !important; }
+.strength-medium { background: var(--warning) !important; }
+.strength-strong { background: var(--primary) !important; }
+</style>
+
+<script>
+// Password visibility toggle
+function togglePasswordVisibility(inputId, iconId) {
+const input = document.getElementById(inputId);
+const icon = document.getElementById(iconId);
+
+if (input.type === 'password') {
+input.type = 'text';
+icon.textContent = '🙈';
+} else {
+input.type = 'password';
+icon.textContent = '👁️';
+}
+}
+
+// Password strength checker
+function checkPasswordStrength() {
+const password = document.getElementById('signup_password').value;
+const strengthBar = document.getElementById('strengthBar');
+const strengthText = document.getElementById('strengthText');
+
+let strength = 0;
+let text = '';
+
+if (password.length >= 6) strength += 25;
+if (password.length >= 10) strength += 25;
+if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+if (/[0-9]/.test(password)) strength += 15;
+if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
+
+strengthBar.style.width = strength + '%';
+
+if (strength < 40) {
+strengthBar.className = 'strength-weak';
+text = 'Weak password';
+strengthText.style.color = 'var(--danger)';
+} else if (strength < 70) {
+strengthBar.className = 'strength-medium';
+text = 'Medium strength';
+strengthText.style.color = 'var(--warning)';
+} else {
+strengthBar.className = 'strength-strong';
+text = 'Strong password';
+strengthText.style.color = 'var(--primary)';
+}
+
+strengthText.textContent = text;
+}
+
+// Password match checker
+function checkPasswordMatch() {
+const password = document.getElementById('signup_password').value;
+const confirm = document.getElementById('signup_confirm').value;
+const matchText = document.getElementById('matchText');
+
+if (confirm.length === 0) {
+matchText.textContent = '';
+return;
+}
+
+if (password === confirm) {
+matchText.textContent = '✓ Passwords match';
+matchText.style.color = 'var(--primary)';
+} else {
+matchText.textContent = '✗ Passwords do not match';
+matchText.style.color = 'var(--danger)';
+}
+}
+</script>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="screen">
+<div class="auth-container">
+<div class="auth-box enhanced-auth-box">
+<!-- Header with icon -->
+<div style="text-align: center; margin-bottom: 2rem;">
+<div style="font-size: 3.5rem; margin-bottom: 1rem; animation: fadeInScale 0.6s ease-out;">🌾</div>
+<h2 style="animation: slideInFromLeft 0.6s ease-out;">Welcome Back</h2>
+<p style="animation: slideInFromRight 0.6s ease-out;">Log in to access your farming dashboard</p>
+</div>
+
+<form id="loginForm" onsubmit="handleLogin(event)">
+<!-- Username with icon -->
+<div class="form-group animated-input" style="animation-delay: 0.1s;">
+<label> Username</label>
+<input type="text" id="login_username" required placeholder="farmer123" class="input-enhanced">
+</div>
+
+<!-- Password with icon and visibility toggle -->
+<div class="form-group animated-input" style="animation-delay: 0.2s;">
+<label> Password</label>
+<div style="position: relative;">
+<input type="password" id="login_password" required placeholder="••••••••" class="input-enhanced">
+<span id="toggleLoginPassword" onclick="togglePasswordVisibility('login_password', 'toggleLoginPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem;">👁️</span>
+</div>
+</div>
+
+<!-- Remember Me & Forgot Password -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; animation: fadeIn 0.6s ease-in; animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards;">
+<label style="display: flex; align-items: center; cursor: pointer; font-size: 0.9rem;">
+<input type="checkbox" id="rememberMe" style="width: auto; margin-right: 8px; accent-color: var(--primary);">
+<span style="color: var(--text-muted);">Remember me</span>
+</label>
+<a href="#" onclick="alert('Contact admin to reset password'); return false;" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Forgot password?</a>
+</div>
+
+<div id="loginError" class="error-message"></div>
+
+<!-- Submit Button -->
+<div class="form-group animated-input" style="animation-delay: 0.4s;">
+<button type="submit" class="btn-primary btn-enhanced" style="width: 100%;">
+<span>Log In</span>
+<span style="margin-left: 8px;">→</span>
+</button>
+</div>
+</form>
+
+<!-- Divider -->
+<div style="display: flex; align-items: center; margin: 2rem 0; animation: fadeIn 1s ease-in;">
+<div style="flex: 1; height: 1px; background: var(--border);"></div>
+<span style="padding: 0 1rem; color: var(--text-muted); font-size: 0.9rem;">or</span>
+<div style="flex: 1; height: 1px; background: var(--border);"></div>
+</div>
+
+<!-- Footer -->
+<div style="text-align: center; animation: fadeIn 1s ease-in;">
+<p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Don't have an account yet?</p>
+<button class="btn-secondary btn-small btn-enhanced" onclick="showScreen('signupScreen')" style="margin-right: 8px; width: 140px;">
+Sign Up
+</button>
+<button class="btn-secondary btn-small" onclick="showScreen('startScreen')" style="width: 100px;">
+Back
+</button>
+</div>
+
+<!-- Quick Stats (Optional - shows benefits) -->
+<div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); animation: fadeInUp 1.2s ease-in;">
+<p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; margin-bottom: 1rem;">Join thousands of farmers using AgroWeather</p>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+<div>
+<div style="font-size: 1.5rem; color: var(--primary); font-weight: bold;">24/7</div>
+<div style="font-size: 0.75rem; color: var(--text-muted);">Weather Updates</div>
+</div>
+<div>
+<div style="font-size: 1.5rem; color: var(--primary); font-weight: bold;">95%</div>
+<div style="font-size: 0.75rem; color: var(--text-muted);">Accuracy</div>
+</div>
+<div>
+<div style="font-size: 1.5rem; color: var(--primary); font-weight: bold;">0</div>
+<div style="font-size: 0.75rem; color: var(--text-muted);">Active Users</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<style>
+/* Add hover effect to links */
+a:hover {
+color: var(--primary-light) !important;
+}
+
+/* Checkbox custom style */
+input[type="checkbox"] {
+cursor: pointer;
+width: 18px;
+height: 18px;
+}
+
+/* Additional fade in up animation for stats */
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Loading state for button */
+.btn-enhanced.loading {
+pointer-events: none;
+opacity: 0.6;
+}
+
+.btn-enhanced.loading::after {
+content: '';
+position: absolute;
+width: 16px;
+height: 16px;
+top: 50%;
+left: 50%;
+margin-left: -8px;
+margin-top: -8px;
+border: 2px solid rgba(255, 255, 255, 0.3);
+border-top-color: white;
+border-radius: 50%;
+animation: spin 0.6s linear infinite;
+}
+</style>
+
+<script>
+// Enhance the handleLogin function to show loading state
+const originalHandleLogin = window.handleLogin;
+window.handleLogin = async function(e) {
+e.preventDefault();
+const submitBtn = e.target.querySelector('button[type="submit"]');
+const originalText = submitBtn.innerHTML;
+
+// Add loading state
+submitBtn.classList.add('loading');
+submitBtn.innerHTML = '<span>Logging in...</span>';
+
+try {
+// Call original login handler
+await originalHandleLogin(e);
+} catch (error) {
+console.error('Login error:', error);
+} finally {
+// Remove loading state
+submitBtn.classList.remove('loading');
+submitBtn.innerHTML = originalText;
+}
+};
+</script>
+
+<!-- Dashboard Screen -->
+<div id="dashboardScreen" class="screen">
+<audio id="bgAudio" loop preload="metadata" aria-hidden="true">
+<source src="background.mp3" type="audio/mpeg">
+<source src="background.ogg" type="audio/ogg">
+Your browser does not support the audio element.
+</audio>
+
+<!-- Enhanced Floating Music Controls -->
+<button id="musicFloatingBtn" onclick="toggleMusicPanel()" style="display:none; position: fixed; bottom: 20px; right: 20px; z-index: 9998; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); border: none; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s ease;">
+🎵
+</button>
+<!-- Music Control Panel (Slide-up) -->
+<div id="musicPanel" style="display:none; position: fixed; bottom: -200px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 400px; background: rgba(30,41,59,0.95); backdrop-filter: blur(10px); padding: 20px; border-radius: 20px 20px 0 0; border: 1px solid var(--border); box-shadow: 0 -4px 20px rgba(0,0,0,0.3); transition: bottom 0.3s ease;">
+<div style="display: flex; flex-direction: column; gap: 16px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<h4 style="margin: 0; color: var(--text); display: flex; align-items: center; gap: 8px;">
+<span>🎵</span>
+<span>Background Music</span>
+</h4>
+<button onclick="toggleMusicPanel()" style="background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; padding: 0; width: 32px; height: 32px;">✕</button>
+</div>
+
+<div style="display: flex; gap: 12px;">
+<button id="musicToggle" class="btn-secondary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;">
+<span id="playIcon">▶️</span>
+<span id="playText">Play</span>
+</button>
+<button id="musicMute" class="btn-secondary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;">
+<span id="muteIcon">🔊</span>
+<span id="muteText">Mute</span>
+</button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 12px;">
+<span style="font-size: 1.2rem;">🔉</span>
+<input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.5" style="flex: 1; accent-color: var(--primary);">
+<span id="volumePercent" style="font-size: 0.9rem; color: var(--text-muted); min-width: 40px;">50%</span>
+</div>
+</div>
+</div>
+
+<audio id="bgAudio" loop preload="metadata">
+<source src="background.mp3" type="audio/mpeg">
+<source src="background.ogg" type="audio/ogg">
+</audio>
+
+<div class="container">
+<!-- Enhanced Dashboard Header -->
+<div class="dashboard-header enhanced-dashboard-header">
+<div class="welcome-text" style="animation: slideInFromLeft 0.6s ease-out;">
+<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+<div style="font-size: 2.5rem; animation: wave 2s ease-in-out infinite;">👋</div>
+<div>
+<h2 style="margin-bottom: 0;">Welcome back, <span id="farmerName" style="color: var(--primary-light);">Farmer</span>! 🌾</h2>
+<div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+<span style="font-size: 0.9rem;">📍</span>
+<p id="farmerLocation" style="margin: 0; font-size: 0.95rem;">Location</p>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-end; animation: slideInFromRight 0.6s ease-out;">
+<div style="display: flex; align-items: center; gap: 12px; background: var(--bg-light); padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border); transition: all 0.3s ease;" class="user-profile-card">
+<div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; color: white; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); transition: transform 0.3s ease;" class="user-avatar">
+<span id="userInitial">?</span>
+</div>
+<div style="text-align: right;">
+<div style="font-size: 0.85rem; color: var(--text-muted);">Logged in as</div>
+<div style="font-weight: 600; color: var(--text); font-size: 0.95rem;" id="headerUsername">Loading...</div>
+</div>
+</div>
+
+<div style="display: flex; gap: 8px;">
+<!-- NOTIFICATION BUTTON -->
+<button class="btn-secondary btn-small" onclick="toggleNotificationPanel()" title="Notifications" style="display: flex; align-items: center; gap: 6px; position: relative;">
+<span style="font-size: 1.1rem;">🔔</span>
+<span>Alerts</span>
+<span id="notifBadge" class="notif-badge">0</span>
+</button>
+
+<button class="btn-secondary btn-small" onclick="refreshDashboard()" title="Refresh data" style="display: flex; align-items: center; gap: 6px;">
+<span style="font-size: 1.1rem;">🔄</span>
+<span>Refresh</span>
+</button>
+
+<button class="btn-secondary btn-small" onclick="handleLogout()" style="display: flex; align-items: center; gap: 6px; background: rgba(239, 68, 68, 0.1); border-color: var(--danger); color: var(--danger);">
+<span style="font-size: 1.1rem;">🚪</span>
+<span>Log Out</span>
+</button>
+</div>
+</div>
+</div>
+
+
+
+<!-- NOTIFICATION PANEL -->
+<div id="notificationPanel" class="notification-panel">
+<div class="notification-header">
+<h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+<span>🔔</span>
+<span>Notifications</span>
+</h3>
+<button onclick="toggleNotificationPanel()" style="background: none; border: none; color: var(--text); cursor: pointer; font-size: 1.5rem; padding: 4px;">✕</button>
+</div>
+
+<div id="notificationList" class="notification-list">
+<div class="loading">
+<div class="spinner"></div>
+<p>Loading notifications...</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<style>
+.user-profile-card:hover {
+background: var(--panel);
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.user-profile-card:hover .user-avatar {
+transform: scale(1.1);
+}
+/* Enhanced Dashboard Header */
+.enhanced-dashboard-header {
+position: relative;
+overflow: hidden;
+}
+
+.enhanced-dashboard-header::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: radial-gradient(circle at top right, rgba(34, 197, 94, 0.05), transparent 70%);
+pointer-events: none;
+}
+
+/* Stat Badges */
+.stat-badge {
+display: inline-flex;
+align-items: center;
+background: var(--bg-light);
+padding: 6px 12px;
+border-radius: 8px;
+border: 1px solid var(--border);
+font-size: 0.9rem;
+color: var(--text-muted);
+transition: all 0.3s ease;
+}
+
+.stat-badge:hover {
+border-color: var(--primary);
+background: rgba(34, 197, 94, 0.05);
+transform: translateY(-2px);
+}
+
+/* Wave animation for hand */
+@keyframes wave {
+0%, 100% { transform: rotate(0deg); }
+10%, 30% { transform: rotate(14deg); }
+20% { transform: rotate(-8deg); }
+40% { transform: rotate(-4deg); }
+50% { transform: rotate(10deg); }
+60% { transform: rotate(0deg); }
+}
+
+/* Enhanced Music Controls */
+.music-btn {
+transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+transform: scale(1.05);
+background: var(--primary);
+color: var(--bg);
+}
+
+.music-btn:active {
+transform: scale(0.95);
+}
+
+/* Music Control positioning */
+#musicControl {
+position: fixed;
+bottom: 24px;
+right: 24px;
+z-index: 9999;
+animation: slideInFromBottom 0.6s ease-out;
+}
+
+@keyframes slideInFromBottom {
+from {
+opacity: 0;
+transform: translateY(50px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+.enhanced-dashboard-header {
+flex-direction: column;
+align-items: flex-start !important;
+gap: 1.5rem;
+}
+
+.enhanced-dashboard-header > div:last-child {
+align-items: flex-start !important;
+width: 100%;
+}
+
+#musicControl {
+bottom: 12px;
+right: 12px;
+left: 12px;
+}
+
+#musicControl > div {
+flex-wrap: wrap;
+justify-content: center;
+}
+}
+</style>
+
+<script>
+// Update date and time
+function updateDateTime() {
+const now = new Date();
+const dateEl = document.getElementById('currentDate');
+const timeEl = document.getElementById('currentTime');
+
+if (dateEl) {
+dateEl.textContent = now.toLocaleDateString('en-US', {
+weekday: 'short',
+month: 'short',
+day: 'numeric'
+});
+}
+
+if (timeEl) {
+timeEl.textContent = now.toLocaleTimeString('en-US', {
+hour: '2-digit',
+minute: '2-digit',
+hour12: true
+});
+}
+}
+
+// Update user initial
+// Update user initial and display
+function updateUserDisplay() {
+if (currentUser && currentUser.name) {
+const initial = currentUser.name.charAt(0).toUpperCase();
+const initialEl = document.getElementById('userInitial');
+const usernameEl = document.getElementById('headerUsername');
+
+if (initialEl) {
+initialEl.textContent = initial;
+}
+
+if (usernameEl) {
+// Display the username from registration
+usernameEl.textContent = currentUser.username || currentUser.name;
+}
+}
+}
+
+// Refresh dashboard function
+function refreshDashboard() {
+const btn = event.target.closest('button');
+const icon = btn.querySelector('span');
+
+// Add spin animation
+icon.style.animation = 'spin 1s linear';
+
+// Reload data
+loadDashboardData();
+
+// Remove animation after complete
+setTimeout(() => {
+icon.style.animation = '';
+}, 1000);
+}
+
+// Enhanced music control updates
+const originalInitBackgroundAudio = window.initBackgroundAudio;
+window.initBackgroundAudio = function() {
+originalInitBackgroundAudio();
+
+const audio = document.getElementById('bgAudio');
+const volumeInput = document.getElementById('musicVolume');
+const volumePercent = document.getElementById('volumePercent');
+const playIcon = document.getElementById('playIcon');
+const playText = document.getElementById('playText');
+const muteIcon = document.getElementById('muteIcon');
+
+if (volumeInput && volumePercent) {
+volumeInput.addEventListener('input', () => {
+volumePercent.textContent = Math.round(volumeInput.value * 100) + '%';
+});
+}
+
+// Update icons
+const updateMusicIcons = () => {
+if (audio && playIcon && playText) {
+if (audio.paused) {
+playIcon.textContent = '▶️';
+playText.textContent = 'Play';
+} else {
+playIcon.textContent = '⏸️';
+playText.textContent = 'Pause';
+}
+}
+
+if (audio && muteIcon) {
+muteIcon.textContent = audio.muted ? '🔇' : '🔊';
+}
+};
+
+// Listen for play/pause events
+if (audio) {
+audio.addEventListener('play', updateMusicIcons);
+audio.addEventListener('pause', updateMusicIcons);
+}
+
+const musicToggle = document.getElementById('musicToggle');
+const musicMute = document.getElementById('musicMute');
+
+if (musicToggle) {
+musicToggle.addEventListener('click', updateMusicIcons);
+}
+
+if (musicMute) {
+musicMute.addEventListener('click', updateMusicIcons);
+}
+
+updateMusicIcons();
+};
+
+// Initialize on dashboard load
+const originalShowDashboard = window.showDashboard;
+window.showDashboard = function() {
+originalShowDashboard();
+updateDateTime();
+updateUserDisplay();
+
+// Update time every minute
+setInterval(updateDateTime, 60000);
+};
+</script>
+
+<!-- Weather Input (City instead of lat/lon) -->
+<div class="card location-card enhanced-card">
+<div class="card-header-enhanced">
+<div class="card-icon">📍</div>
+<h3>Set Your Location</h3>
+</div>
+
+<div class="form-group enhanced-form-group">
+<label class="enhanced-label">
+<span class="label-icon"></span>
+<span>City / Place</span>
+</label>
+<div class="input-wrapper">
+<input type="text" id="cityInput" class="enhanced-input" placeholder="Tandag City, Surigao del Sur" value="Tandag City, Surigao del Sur">
+<span class="input-icon">📌</span>
+</div>
+</div>
+
+<div class="form-group enhanced-form-group">
+<label class="enhanced-label">
+<span class="label-icon"></span>
+<span>Crop Type</span>
+<span class="optional-badge">Optional</span>
+</label>
+<div class="input-wrapper">
+<input type="text" id="cropType" class="enhanced-input" placeholder="e.g., rice, corn, tomato">
+<span class="input-icon">🌱</span>
+</div>
+</div>
+
+<!-- Enhanced action buttons -->
+<div class="location-actions-enhanced">
+<button class="btn-primary btn-enhanced-action" onclick="loadDashboardData()">
+<span class="btn-icon-left">🔄</span>
+<span>Update Weather Data</span>
+<span class="btn-arrow">→</span>
+</button>
+<button id="locateBtn" class="btn-secondary btn-enhanced-action btn-locate" onclick="locateMyPosition()" aria-label="Locate my current position">
+<span class="btn-icon-left">📍</span>
+<span>Use My Location</span>
+</button>
+</div>
+
+<div class="info-banner">
+<span class="info-icon">ℹ️</span>
+<span>City names are geocoded to coordinates automatically.</span>
+</div>
+</div>
+
+<div class="dashboard-grid enhanced-grid">
+<!-- Current Weather -->
+<div class="card weather-card enhanced-card">
+<div class="card-header-enhanced">
+<div class="card-icon gradient-icon">🌤️</div>
+<div>
+<h3>Current Weather</h3>
+<p class="card-subtitle">Real-time conditions</p>
+</div>
+</div>
+<div id="currentWeather" class="loading enhanced-loading">
+<div class="spinner-enhanced"></div>
+<p>Loading weather data...</p>
+<span class="loading-subtitle">Please wait</span>
+</div>
+</div>
+
+<!-- Weather Forecast -->
+<div class="card prediction-card enhanced-card">
+<div class="card-header-enhanced">
+<div class="card-icon gradient-icon">📊</div>
+<div style="flex: 1;">
+<h3>Weather Prediction</h3>
+<p class="card-subtitle">Forecast analysis</p>
+</div>
+</div>
+
+<div class="prediction-controls enhanced-controls">
+<div class="period-buttons enhanced-period-buttons">
+<button class="period-btn enhanced-period-btn active" onclick="setPredictionPeriod('day')">
+<span class="period-icon">📅</span>
+<span>Day</span>
+</button>
+<button class="period-btn enhanced-period-btn" onclick="setPredictionPeriod('week')">
+<span class="period-icon">📆</span>
+<span>Week</span>
+</button>
+<button class="period-btn enhanced-period-btn" onclick="setPredictionPeriod('month')">
+<span class="period-icon">🗓️</span>
+<span>Month</span>
+</button>
+</div>
+</div>
+
+<div id="predictionData" class="loading enhanced-loading">
+<div class="spinner-enhanced"></div>
+<p>Loading predictions...</p>
+<span class="loading-subtitle">Analyzing data</span>
+</div>
+</div>
+</div>
+
+<!-- Advisory Section -->
+<div class="card advisory-card enhanced-card">
+<div class="card-header-enhanced">
+<div class="card-icon gradient-icon">💡</div>
+<div>
+<h3>Farm Advisory & Recommendations</h3>
+<p class="card-subtitle">AI-powered farming insights</p>
+</div>
+</div>
+<div id="advisoryData" class="loading enhanced-loading">
+<div class="spinner-enhanced"></div>
+<p>Loading advisory...</p>
+<span class="loading-subtitle">Generating recommendations</span>
+</div>
+</div>
+
+<!-- Historical Events Section -->
+<div class="card historical-card enhanced-card">
+<div class="card-header-enhanced">
+<div class="card-icon gradient-icon">📜</div>
+<div style="flex: 1;">
+<h3>Historical Weather Events</h3>
+<p class="card-subtitle">Past calamities and disasters in your area</p>
+</div>
+</div>
+
+<!-- Event Type Filter Buttons -->
+<div class="event-filter-buttons" style="margin-bottom: 1.5rem;">
+<button class="event-filter-btn active" onclick="filterEvents('all')" data-type="all">
+<span>📋</span>
+<span>All Events</span>
+</button>
+<button class="event-filter-btn" onclick="filterEvents('typhoon')" data-type="typhoon">
+<span>🌪️</span>
+<span>Typhoons</span>
+</button>
+<button class="event-filter-btn" onclick="filterEvents('flood')" data-type="flood">
+<span>🌊</span>
+<span>Floods</span>
+</button>
+<button class="event-filter-btn" onclick="filterEvents('drought')" data-type="drought">
+<span>☀️</span>
+<span>Droughts</span>
+</button>
+</div>
+
+<!-- Statistics Summary -->
+<div id="historicalStats" style="display: none;">
+<!-- Stats will be injected here -->
+</div>
+
+<!-- Events List -->
+<div id="historicalData" class="loading enhanced-loading">
+<div class="spinner-enhanced"></div>
+<p>Loading historical data...</p>
+<span class="loading-subtitle">Fetching past events</span>
+</div>
+
+<style>
+
+/* Historical Events Styling */
+.historical-card {
+background: linear-gradient(135deg, rgba(251, 146, 60, 0.05) 0%, rgba(30, 41, 59, 0.8) 100%);
+}
+
+.event-filter-buttons {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+.event-filter-btn {
+flex: 1;
+min-width: 120px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.5rem;
+padding: 10px 16px;
+background: var(--bg-light);
+color: var(--text-muted);
+border: 1px solid var(--border);
+border-radius: 10px;
+cursor: pointer;
+transition: all 0.3s ease;
+font-size: 0.9rem;
+font-weight: 500;
+}
+
+.event-filter-btn:hover {
+background: rgba(251, 146, 60, 0.1);
+border-color: #fb923c;
+color: var(--text);
+transform: translateY(-2px);
+}
+
+.event-filter-btn.active {
+background: linear-gradient(135deg, #fb923c, #f97316);
+border-color: #fb923c;
+color: white;
+box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
+}
+
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 12px;
+margin-bottom: 1.5rem;
+padding: 16px;
+background: var(--bg-light);
+border-radius: 12px;
+border: 1px solid var(--border);
+}
+
+.stat-box {
+text-align: center;
+padding: 12px;
+background: var(--panel);
+border-radius: 8px;
+border: 1px solid var(--border);
+transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+transform: translateY(-2px);
+border-color: #fb923c;
+}
+
+.stat-box-value {
+font-size: 1.8rem;
+font-weight: 700;
+color: #fb923c;
+margin-bottom: 4px;
+}
+
+.stat-box-label {
+font-size: 0.85rem;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+.event-timeline {
+position: relative;
+}
+
+.event-item {
+position: relative;
+padding: 16px;
+margin-bottom: 16px;
+background: var(--bg-light);
+border-left: 4px solid var(--primary);
+border-radius: 10px;
+transition: all 0.3s ease;
+cursor: pointer;
+}
+
+.event-item:hover {
+background: var(--panel);
+transform: translateX(4px);
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.event-item.severity-extreme {
+border-left-color: #dc2626;
+background: rgba(220, 38, 38, 0.05);
+}
+
+.event-item.severity-high {
+border-left-color: #f97316;
+background: rgba(249, 115, 22, 0.05);
+}
+
+.event-item.severity-moderate {
+border-left-color: #f59e0b;
+background: rgba(245, 158, 11, 0.05);
+}
+
+.event-item.severity-low {
+border-left-color: #3b82f6;
+background: rgba(59, 130, 246, 0.05);
+}
+
+.event-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 12px;
+gap: 12px;
+}
+
+.event-title {
+font-size: 1.1rem;
+font-weight: 600;
+color: var(--text);
+display: flex;
+align-items: center;
+gap: 8px;
+flex: 1;
+}
+
+.event-icon {
+font-size: 1.5rem;
+}
+
+.event-badges {
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+}
+
+.event-badge {
+padding: 4px 10px;
+border-radius: 6px;
+font-size: 0.75rem;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+.badge-extreme {
+background: rgba(220, 38, 38, 0.2);
+color: #dc2626;
+}
+
+.badge-high {
+background: rgba(249, 115, 22, 0.2);
+color: #f97316;
+}
+
+.badge-moderate {
+background: rgba(245, 158, 11, 0.2);
+color: #f59e0b;
+}
+
+.badge-low {
+background: rgba(59, 130, 246, 0.2);
+color: #3b82f6;
+}
+
+.event-date {
+font-size: 0.9rem;
+color: var(--text-muted);
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.event-description {
+color: var(--text);
+margin-bottom: 10px;
+line-height: 1.6;
+}
+
+.event-meta {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 10px;
+margin-top: 12px;
+padding-top: 12px;
+border-top: 1px solid var(--border);
+}
+
+.event-meta-item {
+font-size: 0.85rem;
+color: var(--text-muted);
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.event-meta-value {
+color: var(--text);
+font-weight: 600;
+}
+
+.empty-events {
+text-align: center;
+padding: 3rem 1.5rem;
+color: var(--text-muted);
+}
+
+.empty-events-icon {
+font-size: 4rem;
+margin-bottom: 1rem;
+opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+.event-filter-buttons {
+flex-direction: column;
+}
+
+.event-filter-btn {
+width: 100%;
+}
+
+.stats-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+
+.event-meta {
+grid-template-columns: 1fr;
+}
+}
+/* Enhanced Card Styling */
+.enhanced-card {
+background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+backdrop-filter: blur(10px);
+border: 1px solid var(--border);
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+overflow: hidden;
+}
+
+.enhanced-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.05), transparent);
+transition: left 0.6s ease;
+}
+
+.enhanced-card:hover::before {
+left: 100%;
+}
+
+.enhanced-card:hover {
+transform: translateY(-6px);
+box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--primary);
+border-color: var(--primary);
+}
+
+/* Card Header */
+.card-header-enhanced {
+display: flex;
+align-items: center;
+gap: 1rem;
+margin-bottom: 1.5rem;
+padding-bottom: 1rem;
+border-bottom: 1px solid var(--border);
+}
+
+.card-icon {
+font-size: 2rem;
+width: 50px;
+height: 50px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: var(--bg-light);
+border-radius: 12px;
+border: 1px solid var(--border);
+transition: all 0.3s ease;
+}
+
+.enhanced-card:hover .card-icon {
+transform: scale(1.1) rotate(5deg);
+border-color: var(--primary);
+box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.gradient-icon {
+background: linear-gradient(135deg, var(--primary), var(--primary-light));
+border: none;
+box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.card-subtitle {
+font-size: 0.85rem;
+color: var(--text-muted);
+margin: 0;
+margin-top: 0.25rem;
+}
+
+/* Enhanced Form Groups */
+.enhanced-form-group {
+margin-bottom: 1.5rem;
+}
+
+.enhanced-label {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+margin-bottom: 0.75rem;
+font-weight: 600;
+font-size: 0.95rem;
+color: var(--text);
+}
+
+.label-icon {
+font-size: 1.1rem;
+}
+
+.optional-badge {
+font-size: 0.75rem;
+padding: 2px 8px;
+background: rgba(34, 197, 94, 0.1);
+color: var(--primary);
+border-radius: 6px;
+border: 1px solid rgba(34, 197, 94, 0.3);
+margin-left: auto;
+}
+
+/* Enhanced Input Wrapper */
+.input-wrapper {
+position: relative;
+}
+
+.enhanced-input {
+width: 100%;
+padding: 14px 45px 14px 16px;
+background: var(--bg-light);
+border: 2px solid var(--border);
+border-radius: 12px;
+color: var(--text);
+font-size: 1rem;
+transition: all 0.3s ease;
+}
+
+.enhanced-input:focus {
+outline: none;
+border-color: var(--primary);
+background: rgba(15, 23, 42, 0.8);
+box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+transform: translateY(-2px);
+}
+
+.enhanced-input:hover {
+border-color: var(--primary-dark);
+}
+
+.input-icon {
+position: absolute;
+right: 16px;
+top: 50%;
+transform: translateY(-50%);
+font-size: 1.2rem;
+opacity: 0.5;
+transition: all 0.3s ease;
+pointer-events: none;
+}
+
+.enhanced-input:focus + .input-icon {
+opacity: 1;
+transform: translateY(-50%) scale(1.2);
+}
+
+/* Enhanced Action Buttons */
+.location-actions-enhanced {
+display: flex;
+gap: 12px;
+margin-top: 1.5rem;
+flex-wrap: wrap;
+}
+
+.btn-enhanced-action {
+flex: 1;
+min-width: 200px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.75rem;
+padding: 14px 24px;
+font-size: 1rem;
+font-weight: 600;
+border-radius: 12px;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+overflow: hidden;
+}
+
+.btn-enhanced-action::before {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 0;
+height: 0;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.2);
+transform: translate(-50%, -50%);
+transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn-enhanced-action:hover::before {
+width: 300px;
+height: 300px;
+}
+
+.btn-enhanced-action:active {
+transform: scale(0.97);
+}
+
+.btn-icon-left {
+font-size: 1.2rem;
+transition: transform 0.3s ease;
+}
+
+.btn-enhanced-action:hover .btn-icon-left {
+transform: rotate(360deg);
+}
+
+.btn-arrow {
+font-size: 1.2rem;
+transition: transform 0.3s ease;
+}
+
+.btn-enhanced-action:hover .btn-arrow {
+transform: translateX(5px);
+}
+
+.btn-locate:hover .btn-icon-left {
+transform: scale(1.3);
+animation: pulse 1s ease infinite;
+}
+
+@keyframes pulse {
+0%, 100% { transform: scale(1.3); }
+50% { transform: scale(1.5); }
+}
+
+/* Info Banner */
+.info-banner {
+display: flex;
+align-items: center;
+gap: 0.75rem;
+margin-top: 1rem;
+padding: 12px 16px;
+background: rgba(59, 130, 246, 0.05);
+border: 1px solid rgba(59, 130, 246, 0.2);
+border-radius: 10px;
+color: var(--text-muted);
+font-size: 0.9rem;
+}
+
+.info-icon {
+font-size: 1.2rem;
+flex-shrink: 0;
+}
+
+/* Enhanced Grid */
+.enhanced-grid {
+gap: 24px;
+margin-bottom: 24px;
+}
+
+/* Enhanced Period Buttons */
+.enhanced-controls {
+margin-bottom: 1.5rem;
+}
+
+.enhanced-period-buttons {
+display: flex;
+gap: 8px;
+background: var(--bg-light);
+padding: 6px;
+border-radius: 12px;
+border: 1px solid var(--border);
+}
+
+.enhanced-period-btn {
+flex: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.5rem;
+padding: 10px 16px;
+background: transparent;
+color: var(--text-muted);
+border: none;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.3s ease;
+font-weight: 500;
+font-size: 0.95rem;
+position: relative;
+}
+
+.enhanced-period-btn::before {
+content: '';
+position: absolute;
+bottom: 0;
+left: 50%;
+width: 0;
+height: 2px;
+background: var(--primary);
+transform: translateX(-50%);
+transition: width 0.3s ease;
+}
+
+.enhanced-period-btn:hover {
+color: var(--text);
+background: rgba(34, 197, 94, 0.05);
+}
+
+.enhanced-period-btn:hover::before {
+width: 80%;
+}
+
+.enhanced-period-btn.active {
+background: var(--primary);
+color: #0a1810;
+box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.enhanced-period-btn.active::before {
+width: 0;
+}
+
+.period-icon {
+font-size: 1.1rem;
+transition: transform 0.3s ease;
+}
+
+.enhanced-period-btn:hover .period-icon {
+transform: scale(1.2);
+}
+
+.enhanced-period-btn.active .period-icon {
+animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-5px); }
+}
+
+/* Enhanced Loading State */
+.enhanced-loading {
+text-align: center;
+padding: 3rem 1.5rem;
+color: var(--text-muted);
+}
+
+.spinner-enhanced {
+width: 50px;
+height: 50px;
+margin: 0 auto 1.5rem;
+border: 4px solid var(--border);
+border-top: 4px solid var(--primary);
+border-radius: 50%;
+animation: spin 1s linear infinite;
+box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+}
+
+.loading-subtitle {
+display: block;
+margin-top: 0.5rem;
+font-size: 0.85rem;
+color: var(--text-muted);
+opacity: 0.7;
+}
+
+/* Specific Card Enhancements */
+.location-card {
+margin-bottom: 32px;
+}
+
+.weather-card {
+background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(30, 41, 59, 0.8) 100%);
+}
+
+.prediction-card {
+background: linear-gradient(135deg, rgba(168, 85, 247, 0.05) 0%, rgba(30, 41, 59, 0.8) 100%);
+}
+
+.advisory-card {
+background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(30, 41, 59, 0.8) 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.location-actions-enhanced {
+flex-direction: column;
+}
+
+.btn-enhanced-action {
+width: 100%;
+min-width: auto;
+}
+
+.enhanced-grid {
+grid-template-columns: 1fr;
+}
+
+.card-header-enhanced {
+flex-direction: column;
+align-items: flex-start;
+text-align: left;
+}
+
+.enhanced-period-buttons {
+flex-direction: column;
+}
+
+.enhanced-period-btn {
+width: 100%;
+}
+}
+
+/* Smooth Transitions on Load */
+.enhanced-card {
+animation: cardFadeIn 0.6s ease-out backwards;
+}
+
+.location-card {
+animation-delay: 0.1s;
+}
+
+.weather-card {
+animation-delay: 0.2s;
+}
+
+.prediction-card {
+animation-delay: 0.3s;
+}
+
+.advisory-card {
+animation-delay: 0.4s;
+}
+
+@keyframes cardFadeIn {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+</style>
+<script>
+// Auto-detect if on mobile or desktop
+// New code - automatically detects the correct address
+const API_BASE = (() => {
+const hostname = window.location.hostname;
+return `http://${hostname}:8000/api`;
+})();
+
+let authToken = null;
+let currentUser = null;
+let currentPredictionPeriod = 'day';
+let geocodedLocationName = null; // store human-readable name from geocoding
+
+// Screen Management
+function showScreen(screenId) {
+document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+document.getElementById(screenId).classList.add('active');
+
+// Keep audio behavior in sync with current screen
+if (typeof updateAudioOnScreenChange === 'function') updateAudioOnScreenChange();
+}
+
+// Authentication
+async function handleSignup(e) {
+e.preventDefault();
+const errorEl = document.getElementById('signupError');
+errorEl.textContent = '';
+
+const password = document.getElementById('signup_password').value;
+const confirm = document.getElementById('signup_confirm').value;
+
+if (password !== confirm) {
+errorEl.textContent = 'Passwords do not match!';
+return;
+}
+
+const data = {
+name: document.getElementById('signup_name').value,
+age: parseInt(document.getElementById('signup_age').value),
+gender: document.getElementById('signup_gender').value,
+location: document.getElementById('signup_location').value,
+username: document.getElementById('signup_username').value,
+password: password,
+confirm_password: confirm
+};
+
+try {
+const response = await fetch(`${API_BASE}/signup`, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(data)
+});
+
+if (!response.ok) {
+const error = await response.json();
+throw new Error(error.detail || 'Signup failed');
+}
+
+const result = await response.json();
+authToken = result.token;
+currentUser = result.user;
+localStorage.setItem('authToken', authToken);
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+showDashboard();
+} catch (error) {
+errorEl.textContent = error.message;
+}
+}
+
+async function handleLogin(e) {
+e.preventDefault();
+const errorEl = document.getElementById('loginError');
+errorEl.textContent = '';
+
+const data = {
+username: document.getElementById('login_username').value,
+password: document.getElementById('login_password').value
+};
+
+try {
+const response = await fetch(`${API_BASE}/login`, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(data)
+});
+
+if (!response.ok) {
+const error = await response.json();
+throw new Error(error.detail || 'Login failed');
+}
+
+const result = await response.json();
+
+// ✅ Check if user is admin
+if (result.user.is_admin) {
+// Store admin credentials and redirect to admin panel
+localStorage.setItem('adminAuthToken', result.token);
+localStorage.setItem('currentAdmin', JSON.stringify(result.user));
+window.location.href = 'admin.html';
+return;
+}
+
+// Regular user login
+authToken = result.token;
+currentUser = result.user;
+localStorage.setItem('authToken', authToken);
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+showDashboard();
+} catch (error) {
+errorEl.textContent = error.message;
+}
+}
+async function handleLogout() {
+try {
+await fetch(`${API_BASE}/logout`, {
+method: 'POST',
+headers: { 'Authorization': `Bearer ${authToken}` }
+});
+} catch (error) {
+console.error('Logout error:', error);
+}
+
+authToken = null;
+currentUser = null;
+localStorage.removeItem('authToken');
+localStorage.removeItem('currentUser');
+showScreen('startScreen');
+}
+
+function showDashboard() {
+document.getElementById('farmerName').textContent = currentUser.name;
+document.getElementById('farmerLocation').textContent = currentUser.location;
+showScreen('dashboardScreen');
+loadDashboardData();
+updateUserDisplay();
+
+// Initialize notifications
+updateNotificationBadge();
+setInterval(updateNotificationBadge, 30000);
+}
+// Geocode city name to coordinates using Nominatim (forward geocode)
+async function geocodeCity(city) {
+if (!city) throw new Error('City is empty');
+const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(city)}`;
+const resp = await fetch(url, {
+headers: {
+'Accept-Language': 'en'
+}
+});
+if (!resp.ok) throw new Error('Geocoding failed');
+const results = await resp.json();
+if (!results || results.length === 0) throw new Error('Location not found');
+const r = results[0];
+return {
+latitude: parseFloat(r.lat),
+longitude: parseFloat(r.lon),
+display_name: r.display_name
+};
+}
+
+// Reverse geocode coordinates to a display name using Nominatim
+async function reverseGeocode(lat, lon) {
+const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&zoom=10&addressdetails=0`;
+const resp = await fetch(url, {
+headers: { 'Accept-Language': 'en' }
+});
+if (!resp.ok) throw new Error('Reverse geocoding failed');
+const data = await resp.json();
+return data.display_name || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+}
+
+// Weather & Dashboard Data
+async function loadDashboardData() {
+console.log("🚀 loadDashboardData called!"); // ADD THIS
+
+const city = document.getElementById('cityInput').value.trim();
+
+if (!city) {
+alert('Please enter a city or place name');
+return;
+}
+
+let lat, lon;
+geocodedLocationName = null;
+try {
+const geo = await geocodeCity(city);
+lat = geo.latitude;
+lon = geo.longitude;
+geocodedLocationName = geo.display_name;
+} catch (err) {
+alert('Geocoding error: ' + err.message);
+return;
+}
+
+await Promise.all([
+loadCurrentWeather(lat, lon),
+loadPrediction(lat, lon, currentPredictionPeriod),
+loadAdvisory(lat, lon, currentPredictionPeriod),
+loadHistoricalEvents(lat, lon) // ← ADD THIS LINE
+]);
+}
+
+// New: locate current position, reverse geocode, update input and load data
+function locateMyPosition() {
+if (!navigator.geolocation) {
+alert('Geolocation is not supported by your browser.');
+return;
+}
+
+const input = document.getElementById('cityInput');
+const locateBtn = document.getElementById('locateBtn');
+const prevPlaceholder = input.placeholder;
+input.placeholder = 'Locating...';
+locateBtn.disabled = true;
+
+navigator.geolocation.getCurrentPosition(async (pos) => {
+try {
+const lat = pos.coords.latitude;
+const lon = pos.coords.longitude;
+
+// Try to get a human readable name and set the input
+let displayName = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+try {
+displayName = await reverseGeocode(lat, lon);
+} catch (e) {
+console.warn('Reverse geocode failed:', e);
+}
+
+document.getElementById('cityInput').value = displayName;
+geocodedLocationName = displayName;
+
+// Load data directly using coordinates (avoid re-geocoding)
+await Promise.all([
+loadCurrentWeather(lat, lon),
+loadPrediction(lat, lon, currentPredictionPeriod),
+loadAdvisory(lat, lon, currentPredictionPeriod),
+loadHistoricalEvents(lat, lon) // ← ADD THIS LINE
+
+]);
+} catch (e) {
+alert('Error while locating: ' + (e.message || e));
+} finally {
+input.placeholder = prevPlaceholder;
+locateBtn.disabled = false;
+}
+}, (err) => {
+input.placeholder = prevPlaceholder;
+locateBtn.disabled = false;
+alert('Geolocation error: ' + (err.message || 'Permission denied or timeout'));
+}, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60 * 1000 });
+}
+
+async function loadCurrentWeather(lat, lon) {
+const container = document.getElementById('currentWeather');
+container.innerHTML = '<div class="spinner"></div><p>Loading...</p>';
+
+try {
+// Fetch both weather and prediction data
+const [weatherResponse, predictionResponse] = await Promise.all([
+fetch(`${API_BASE}/weather?latitude=${lat}&longitude=${lon}`, {
+headers: { 'Authorization': `Bearer ${authToken}` }
+}),
+fetch(`${API_BASE}/prediction/week?latitude=${lat}&longitude=${lon}`, {
+headers: { 'Authorization': `Bearer ${authToken}` }
+})
+]);
+
+if (!weatherResponse.ok) {
+const err = await weatherResponse.json().catch(()=>({detail:'Failed to fetch weather'}));
+throw new Error(err.detail || 'Failed to fetch weather');
+}
+
+const weatherData = await weatherResponse.json();
+const predictionData = predictionResponse.ok ? await predictionResponse.json() : null;
+
+// Pass both to display function
+displayCurrentWeather(weatherData, predictionData);
+} catch (error) {
+container.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+}
+}
+
+// ONLY REPLACE THE displayCurrentWeather FUNCTION
+// Find this function in your HTML file and replace it with this version
+
+function displayCurrentWeather(data, predictionData = null) {
+const weatherCodes = {
+0: { emoji: '☀️', desc: 'Clear Sky' },
+1: { emoji: '🌤️', desc: 'Mainly Clear' },
+2: { emoji: '⛅', desc: 'Partly Cloudy' },
+3: { emoji: '☁️', desc: 'Overcast' },
+45: { emoji: '🌫️', desc: 'Foggy' },
+48: { emoji: '🌫️', desc: 'Rime Fog' },
+51: { emoji: '🌦️', desc: 'Light Drizzle' },
+53: { emoji: '🌧️', desc: 'Moderate Drizzle' },
+55: { emoji: '🌧️', desc: 'Dense Drizzle' },
+56: { emoji: '🌧️', desc: 'Freezing Drizzle' },
+57: { emoji: '🌧️', desc: 'Dense Freezing Drizzle' },
+61: { emoji: '🌧️', desc: 'Slight Rain' },
+63: { emoji: '🌧️', desc: 'Moderate Rain' },
+65: { emoji: '🌧️', desc: 'Heavy Rain' },
+66: { emoji: '🌧️', desc: 'Freezing Rain' },
+67: { emoji: '🌧️', desc: 'Heavy Freezing Rain' },
+71: { emoji: '🌨️', desc: 'Slight Snow' },
+73: { emoji: '🌨️', desc: 'Moderate Snow' },
+75: { emoji: '🌨️', desc: 'Heavy Snow' },
+77: { emoji: '🌨️', desc: 'Snow Grains' },
+80: { emoji: '🌦️', desc: 'Slight Rain Showers' },
+81: { emoji: '🌧️', desc: 'Moderate Rain Showers' },
+82: { emoji: '⛈️', desc: 'Violent Rain Showers' },
+85: { emoji: '🌨️', desc: 'Slight Snow Showers' },
+86: { emoji: '🌨️', desc: 'Heavy Snow Showers' },
+95: { emoji: '⛈️', desc: 'Thunderstorm' },
+96: { emoji: '⛈️', desc: 'Thunderstorm with Hail' },
+99: { emoji: '⛈️', desc: 'Thunderstorm with Heavy Hail' }
+};
+
+const weatherInfo = weatherCodes[data.weather_code] || { emoji: '🌡️', desc: (data.weather_description || 'Unknown') };
+const locLabel = geocodedLocationName || (data.location_name || (data.latitude ? `${data.latitude.toFixed(2)}, ${data.longitude.toFixed(2)}` : 'Unknown location'));
+
+// Build hourly - ONLY USE ACTUAL DATA, NO FALLBACK
+let hourly = [];
+if (Array.isArray(data.hourly_times) && Array.isArray(data.hourly_temp) && data.hourly_times.length) {
+const count = Math.min(data.hourly_times.length, data.hourly_temp.length, 48);
+for (let i = 0; i < count; i++) {
+hourly.push({
+time: data.hourly_times[i],
+temp: data.hourly_temp[i],
+code: data.hourly_weather_code?.[i] ?? data.weather_code
+});
+}
+} else if (Array.isArray(data.hourly) && data.hourly.length) {
+hourly = data.hourly.slice(0, 48).map(h => ({
+time: h.time || h.dt || h.timestamp || '',
+temp: (h.temperature ?? h.temp ?? h.temp_c),
+code: (h.weather_code ?? h.code ?? data.weather_code)
+}));
+}
+// NO FALLBACK - if no data, hourly stays empty
+
+// Build daily - USE PREDICTION DATA IF AVAILABLE
+let daily = [];
+if (predictionData && Array.isArray(predictionData.forecast_data) && predictionData.forecast_data.length) {
+daily = predictionData.forecast_data.slice(0, 5).map(d => ({
+date: d.date,
+icon: d.weather_code ?? data.weather_code,
+max: d.temp_max,
+min: d.temp_min ?? null
+}));
+} else if (Array.isArray(data.daily) && data.daily.length) {
+daily = data.daily.slice(0, 5).map(d => ({
+date: d.date || d.dt || d.timestamp || '',
+icon: (d.weather_code ?? d.code ?? data.weather_code),
+max: (d.temp_max ?? d.max_temp ?? d.max),
+min: (d.temp_min ?? d.min_temp ?? d.min)
+}));
+}
+
+const feels = (data.feels_like ?? data.apparent_temperature ?? data.temperature);
+const visibility = (data.visibility ?? data.vis ?? data.visibility_km ?? 8);
+const uv = (data.uv_index ?? data.uv ?? 0);
+const humidity = (data.humidity ?? data.rh ?? 0);
+const windspeed = (data.windspeed ?? data.wind_speed ?? data.wind ?? 0);
+const pressure = (data.pressure ?? data.press ?? 0);
+
+function parseToDate(t) {
+if (!t) return null;
+if (typeof t === 'number') {
+if (String(t).length === 10) return new Date(t * 1000);
+return new Date(t);
+}
+const maybe = new Date(t);
+if (!isNaN(maybe.getTime())) return maybe;
+try { return new Date(t.replace(' ', 'T')); } catch (e) { return null; }
+}
+
+const today = new Date(); today.setHours(0,0,0,0);
+const tomorrow = new Date(today.getTime() + 24*60*60*1000);
+function formatShortDate(d) { return `${d.getMonth()+1}/${d.getDate()}`; }
+function dayNameOrDate(d) {
+const dd = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+if (dd.getTime() === today.getTime()) return `Today (${formatShortDate(dd)})`;
+if (dd.getTime() === tomorrow.getTime()) return `Tomorrow (${formatShortDate(dd)})`;
+return `${dd.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`;
+}
+
+const dayKeys = [];
+const dayKeyToDate = {};
+hourly.forEach(h => {
+const dt = parseToDate(h.time) || new Date();
+const key = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()).toISOString();
+if (!dayKeyToDate[key]) {
+dayKeyToDate[key] = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+dayKeys.push(key);
+}
+});
+
+function hourLabel(h) {
+if (!h) return '';
+const dt = parseToDate(h);
+if (!dt) return String(h).replace(':00','').replace(':','');
+const hour = dt.getHours();
+const suffix = hour >= 12 ? 'PM' : 'AM';
+const displayHour = (hour % 12) === 0 ? 12 : (hour % 12);
+return `${displayHour}${suffix}`;
+}
+
+let html = `
+<div class="top-row">
+<div class="location-label">${locLabel}</div>
+<div class="small-temp">${(data.temperature!=null)?Number(data.temperature).toFixed(1): '--'}°C</div>
+</div>
+<div class="divider"></div>
+
+<div class="main-row">
+<div style="display:flex;align-items:baseline;gap:6px;">
+<div class="big-temp">${(data.temperature!=null)?Number(data.temperature).toFixed(1): '--'}<span class="deg-faint">°C</span></div>
+</div>
+<div style="min-width:160px;">
+<div class="desc">${weatherInfo.desc || (data.weather_description || '')}</div>
+<div style="color:var(--text-muted); margin-top:8px; font-size:0.95rem; text-align:right;">
+${new Date().toLocaleDateString('en-US', { weekday: 'short', month:'short', day:'numeric' })}
+</div>
+</div>
+</div>
+
+<div class="days-header">
+`;
+
+dayKeys.forEach(k => {
+const d = dayKeyToDate[k];
+html += `<div class="day-chip">${dayNameOrDate(d)}</div>`;
+});
+
+html += `</div>`;
+html += `<div class="hourly-row" role="list">`;
+
+hourly.forEach(h => {
+const icon = (weatherCodes[h.code] && weatherCodes[h.code].emoji) || weatherInfo.emoji || '🌡️';
+html += `
+<div class="hour-item" role="listitem">
+<div style="font-size:0.85rem;color:var(--text-muted)">${hourLabel(h.time)}</div>
+<div class="icon">${icon}</div>
+<div style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">${(h.temp!=null)?(Number(h.temp).toFixed(1)+'°C'):'--'}</div>
+</div>
+`;
+});
+
+html += `</div>`;
+html += `<div class="daily-grid">`;
+
+daily.forEach((d, idx) => {
+const dIcon = (weatherCodes[d.icon] && weatherCodes[d.icon].emoji) || weatherInfo.emoji;
+const dayDate = parseToDate(d.date) || new Date(new Date().getTime() + idx*24*60*60*1000);
+const dayLabel = dayDate ? (dayDate.getMonth()+1) + '/' + dayDate.getDate() : '';
+html += `
+<div class="daily-cell">
+<div style="font-weight:700;color:var(--text);">${idx===0? 'Today' : dayLabel}</div>
+<div class="day-icon">${dIcon}</div>
+<div class="day-temp">${(d.max!=null)?(Number(d.max).toFixed(1)+'°C'):'--'}</div>
+<div style="color:var(--text-muted);font-size:0.8rem;margin-top:4px;">${(d.min!=null)?(Number(d.min).toFixed(1)+'°C'):''}</div>
+</div>
+`;
+});
+
+html += `</div>`;
+
+html += `
+<div class="metrics-grid" style="margin-top:10px;">
+<div class="metric">
+<div class="metric-value">${(feels!=null)?Math.round(feels)+'°C':'--'}</div>
+<div>Temperature Felt</div>
+</div>
+<div class="metric">
+<div class="metric-value">${(visibility!=null)?visibility+' km':'--'}</div>
+<div>Visibility</div>
+</div>
+<div class="metric">
+<div class="metric-value">${uv!=null? (uv <= 2 ? 'Very Weak' : (uv <=5 ? 'Moderate' : 'High')) : '--'}</div>
+<div>UV</div>
+</div>
+<div class="metric">
+<div class="metric-value">${(humidity!=null)?Math.round(humidity)+'%':'--'}</div>
+<div>Humidity</div>
+</div>
+<div class="metric">
+<div class="metric-value">${(windspeed!=null)?Math.round(windspeed)+' km/h':'--'}</div>
+<div>Wind</div>
+</div>
+<div class="metric">
+<div class="metric-value">${(pressure!=null)?Math.round(pressure)+' hPa':'--'}</div>
+<div>Air Pressure</div>
+</div>
+</div>
+`;
+
+document.getElementById('currentWeather').innerHTML = html;
+}
+
+function setPredictionPeriod(period) {
+currentPredictionPeriod = period;
+document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+if (typeof event !== 'undefined' && event && event.target) event.target.classList.add('active');
+
+const city = document.getElementById('cityInput').value.trim();
+if (!city) {
+alert('Please enter a city before changing prediction period.');
+return;
+}
+
+geocodeCity(city).then(geo => {
+loadPrediction(geo.latitude, geo.longitude, period);
+loadAdvisory(geo.latitude, geo.longitude, period);
+}).catch(err => {
+alert('Geocoding error: ' + err.message);
+});
+}
+
+async function loadPrediction(lat, lon, period) {
+const container = document.getElementById('predictionData');
+container.innerHTML = '<div class="spinner"></div><p>Loading...</p>';
+
+try {
+const response = await fetch(
+`${API_BASE}/prediction/${period}?latitude=${lat}&longitude=${lon}`,
+{ headers: { 'Authorization': `Bearer ${authToken}` } }
+);
+
+if (!response.ok) {
+const err = await response.json().catch(()=>({detail:'Failed to fetch prediction'}));
+throw new Error(err.detail || 'Failed to fetch prediction');
+}
+
+const data = await response.json();
+displayPrediction(data);
+} catch (error) {
+container.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+}
+}
+
+function displayPrediction(data) {
+let html = `
+<div style="margin-bottom: 1rem;">
+<div class="detail-item" style="margin-bottom: 0.5rem;">
+<div class="detail-label">Average Temperature</div>
+<div class="detail-value">${data.avg_temperature}°C</div>
+</div>
+<div class="detail-item">
+<div class="detail-label">Total Precipitation</div>
+<div class="detail-value">${data.total_precipitation} mm</div>
+</div>
+</div>
+<div class="forecast-list">
+`;
+
+(data.forecast_data || []).slice(0, 7).forEach(day => {
+const date = new Date(day.date);
+const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+html += `
+<div class="forecast-item">
+<div class="forecast-date">${dateStr}</div>
+<div class="forecast-values">
+<span>🌡️ ${day.temp_max?.toFixed(1) || '--'}°C</span>
+<span>💧 ${day.precipitation?.toFixed(1) || '0'} mm</span>
+</div>
+</div>
+`;
+});
+
+html += '</div>';
+document.getElementById('predictionData').innerHTML = html;
+}
+
+async function loadAdvisory(lat, lon, period) {
+const container = document.getElementById('advisoryData');
+container.innerHTML = '<div class="spinner"></div><p>Loading...</p>';
+
+try {
+const crop = document.getElementById('cropType').value.trim();
+const response = await fetch(
+`${API_BASE}/advice?latitude=${lat}&longitude=${lon}`,
+{
+method: 'POST',
+headers: {
+'Authorization': `Bearer ${authToken}`,
+'Content-Type': 'application/json'
+},
+body: JSON.stringify({ crop: crop || null, period: period })
+}
+);
+
+if (!response.ok) {
+const err = await response.json().catch(()=>({detail:'Failed to fetch advisory'}));
+throw new Error(err.detail || 'Failed to fetch advisory');
+}
+
+const data = await response.json();
+displayAdvisory(data);
+} catch (error) {
+container.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+}
+}
+
+function displayAdvisory(data) {
+let html = `<p style="color: var(--text-muted); margin-bottom: 1.5rem;">${data.summary}</p>`;
+
+if (data.weather_alerts && data.weather_alerts.length > 0) {
+html += '<h4 style="margin-bottom: 0.75rem;">Weather Alerts</h4>';
+data.weather_alerts.forEach(alert => {
+const alertClass = alert.includes('⚠️') ? 'alert-warning' :
+alert.includes('✅') ? 'alert-success' : 'alert-info';
+html += `<div class="alert-banner ${alertClass}">${alert}</div>`;
+});
+}
+
+if (data.recommendations && data.recommendations.length > 0) {
+html += '<h4 style="margin: 1.5rem 0 0.75rem;">Recommendations</h4>';
+html += '<ul class="recommendation-list">';
+data.recommendations.forEach(rec => {
+html += `<li>${rec}</li>`;
+});
+html += '</ul>';
+}
+
+if (data.best_activities && data.best_activities.length > 0) {
+html += '<h4 style="margin: 1.5rem 0 0.75rem;">Best Farm Activities</h4>';
+html += '<ul class="activity-list">';
+data.best_activities.forEach(activity => {
+html += `<li>${activity}</li>`;
+});
+html += '</ul';
+}
+
+document.getElementById('advisoryData').innerHTML = html;
+}
+
+function initBackgroundAudio() {
+const audio = document.getElementById('bgAudio');
+const toggle = document.getElementById('musicToggle');
+const muteBtn = document.getElementById('musicMute');
+const vol = document.getElementById('musicVolume');
+const floatingBtn = document.getElementById('musicFloatingBtn');
+const panel = document.getElementById('musicPanel');
+
+if (!audio || !toggle || !vol || !muteBtn || !floatingBtn || !panel) return;
+
+const savedVol = localStorage.getItem('agro_bg_volume');
+const savedPlaying = localStorage.getItem('agro_bg_playing') === 'true';
+const savedMuted = localStorage.getItem('agro_bg_muted') === 'true';
+
+audio.volume = savedVol !== null ? parseFloat(savedVol) : 0.5;
+vol.value = audio.volume;
+audio.muted = !!savedMuted;
+
+function updateUI() {
+const playIcon = document.getElementById('playIcon');
+const playText = document.getElementById('playText');
+const muteIcon = document.getElementById('muteIcon');
+const muteText = document.getElementById('muteText');
+const volumePercent = document.getElementById('volumePercent');
+
+if (playIcon && playText) {
+if (audio.paused) {
+playIcon.textContent = '▶️';
+playText.textContent = 'Play';
+floatingBtn.textContent = '🎵';
+} else {
+playIcon.textContent = '⏸️';
+playText.textContent = 'Pause';
+floatingBtn.textContent = '🎶';
+}
+}
+
+if (muteIcon && muteText) {
+if (audio.muted) {
+muteIcon.textContent = '🔇';
+muteText.textContent = 'Unmute';
+} else {
+muteIcon.textContent = '🔊';
+muteText.textContent = 'Mute';
+}
+}
+
+if (volumePercent) {
+volumePercent.textContent = Math.round(vol.value * 100) + '%';
+}
+}
+
+if (savedPlaying) {
+audio.play().catch(() => {});
+}
+
+toggle.addEventListener('click', async () => {
+if (audio.paused) {
+try {
+await audio.play();
+localStorage.setItem('agro_bg_playing', 'true');
+} catch (e) {
+console.warn('Autoplay blocked', e);
+}
+} else {
+audio.pause();
+localStorage.setItem('agro_bg_playing', 'false');
+}
+updateUI();
+});
+
+muteBtn.addEventListener('click', () => {
+audio.muted = !audio.muted;
+localStorage.setItem('agro_bg_muted', audio.muted ? 'true' : 'false');
+updateUI();
+});
+
+vol.addEventListener('input', () => {
+audio.volume = parseFloat(vol.value);
+if (audio.volume === 0) {
+audio.muted = true;
+localStorage.setItem('agro_bg_muted', 'true');
+} else {
+if (audio.muted) {
+audio.muted = false;
+localStorage.setItem('agro_bg_muted', 'false');
+}
+}
+localStorage.setItem('agro_bg_volume', String(audio.volume));
+updateUI();
+});
+
+const active = document.querySelector('.screen.active');
+if (active && active.id === 'dashboardScreen') {
+floatingBtn.style.display = 'flex';
+panel.style.display = 'block';
+} else {
+floatingBtn.style.display = 'none';
+panel.style.display = 'none';
+}
+
+updateUI();
+}
+function toggleMusicPanel() {
+const panel = document.getElementById('musicPanel');
+const btn = document.getElementById('musicFloatingBtn');
+
+if (panel.style.bottom === '0px') {
+panel.style.bottom = '-200px';
+btn.style.transform = 'scale(1)';
+} else {
+panel.style.bottom = '0px';
+btn.style.transform = 'scale(0.9)';
+}
+}
+
+function updateAudioOnScreenChange() {
+const audio = document.getElementById('bgAudio');
+const floatingBtn = document.getElementById('musicFloatingBtn');
+const panel = document.getElementById('musicPanel');
+
+if (!audio || !floatingBtn || !panel) return;
+
+const active = document.querySelector('.screen.active');
+if (!active || active.id !== 'dashboardScreen') {
+if (!audio.paused) {
+audio.pause();
+}
+floatingBtn.style.display = 'none';
+panel.style.display = 'none';
+panel.style.bottom = '-200px';
+} else {
+floatingBtn.style.display = 'flex';
+panel.style.display = 'block';
+if (localStorage.getItem('agro_bg_playing') === 'true') {
+audio.play().catch(() => {});
+}
+}
+}
+
+
+let currentEventFilter = 'all';
+let allHistoricalEvents = [];
+function displayHistoricalEventsNow(events) {
+const container = document.getElementById('historicalData');
+
+if (!events || events.length === 0) {
+container.innerHTML = `
+<div class="empty-events">
+<div class="empty-events-icon">📜</div>
+<p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No historical events found</p>
+<p style="font-size: 0.9rem;">No events recorded within 150km of your location</p>
+</div>
+`;
+return;
+}
+
+let html = '<div class="event-timeline">';
+
+const eventIcons = {
+'typhoon': '🌪️',
+'flood': '🌊',
+'drought': '☀️',
+'earthquake': '🏚️',
+'landslide': '⛰️',
+'storm_surge': '🌊'
+};
+
+events.forEach(event => {
+const icon = eventIcons[event.event_type] || '⚠️';
+const severityClass = `severity-${event.severity}`;
+const badgeClass = `badge-${event.severity}`;
+
+const eventDate = new Date(event.event_date);
+const formattedDate = eventDate.toLocaleDateString('en-US', {
+year: 'numeric',
+month: 'long',
+day: 'numeric'
+});
+const timeAgo = formatTimeAgoFromDate(eventDate);
+
+html += `
+<div class="event-item ${severityClass}">
+<div class="event-header">
+<div class="event-title">
+<span class="event-icon">${icon}</span>
+<span>${event.event_name}</span>
+</div>
+<div class="event-badges">
+<span class="event-badge ${badgeClass}">${event.severity}</span>
+</div>
+</div>
+
+<div class="event-date">
+<span>📅</span>
+<span>${formattedDate} (${timeAgo})</span>
+</div>
+
+${event.description ? `
+<div class="event-description">${event.description}</div>
+` : ''}
+
+<div class="event-meta">
+${event.distance_km ? `
+<div class="event-meta-item">
+<span>📍</span>
+<span><span class="event-meta-value">${event.distance_km} km</span> away</span>
+</div>
+` : ''}
+
+${event.affected_areas ? `
+<div class="event-meta-item">
+<span>🗺️</span>
+<span class="event-meta-value">${event.affected_areas}</span>
+</div>
+` : ''}
+
+${event.casualties > 0 ? `
+<div class="event-meta-item">
+<span>👥</span>
+<span><span class="event-meta-value">${event.casualties.toLocaleString()}</span> casualties</span>
+</div>
+` : ''}
+</div>
+</div>
+`;
+});
+
+html += '</div>';
+container.innerHTML = html;
+}
+async function loadHistoricalEvents(lat, lon) {
+const container = document.getElementById('historicalData');
+container.innerHTML = '<div class="spinner-enhanced"></div><p>Loading historical data...</p>';
+
+try {
+const response = await fetch(
+`${API_BASE}/historical-events?latitude=${lat}&longitude=${lon}&radius_km=150`,
+{ headers: { 'Authorization': `Bearer ${authToken}` } }
+);
+
+if (!response.ok) {
+throw new Error('Failed to fetch historical events');
+}
+
+const events = await response.json();
+
+console.log("📦 Raw events from API:", events);
+
+// Store globally
+allHistoricalEvents = events;
+
+// Display immediately
+if (events.length === 0) {
+container.innerHTML = `
+<div class="empty-events">
+<div class="empty-events-icon">📜</div>
+<p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No historical events found</p>
+<p style="font-size: 0.9rem;">No events recorded within 150km of your location</p>
+</div>
+`;
+return;
+}
+
+// Build HTML directly here
+let html = '<div class="event-timeline">';
+
+events.forEach(event => {
+const severityClass = `severity-${event.severity}`;
+const eventDate = new Date(event.event_date);
+const formattedDate = eventDate.toLocaleDateString('en-US', {
+year: 'numeric',
+month: 'long',
+day: 'numeric'
+});
+
+html += `
+<div class="event-item ${severityClass}">
+<div class="event-header">
+<div class="event-title">
+<span class="event-icon">🌪️</span>
+<span>${event.event_name}</span>
+</div>
+<div class="event-badges">
+<span class="event-badge badge-${event.severity}">${event.severity}</span>
+</div>
+</div>
+
+<div class="event-date">
+<span>📅</span>
+<span>${formattedDate}</span>
+</div>
+
+${event.description ? `<div class="event-description">${event.description}</div>` : ''}
+
+<div class="event-meta">
+${event.distance_km ? `
+<div class="event-meta-item">
+<span>📍</span>
+<span><span class="event-meta-value">${event.distance_km} km</span> away</span>
+</div>
+` : ''}
+
+${event.affected_areas ? `
+<div class="event-meta-item">
+<span>🗺️</span>
+<span class="event-meta-value">${event.affected_areas}</span>
+</div>
+` : ''}
+
+${event.casualties > 0 ? `
+<div class="event-meta-item">
+<span>👥</span>
+<span><span class="event-meta-value">${event.casualties.toLocaleString()}</span> casualties</span>
+</div>
+` : ''}
+</div>
+</div>
+`;
+});
+
+html += '</div>';
+container.innerHTML = html;
+
+console.log("✅ Events displayed!");
+if (currentEventFilter !== 'all') {
+filterEvents(currentEventFilter);
+}
+
+} catch (error) {
+console.error('Error loading historical events:', error);
+container.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+}
+}
+
+function filterEvents(type) {
+currentEventFilter = type;
+
+console.log("🔍 Filtering by:", type);
+
+// Update active button
+document.querySelectorAll('.event-filter-btn').forEach(btn => {
+btn.classList.remove('active');
+if (btn.dataset.type === type) {
+btn.classList.add('active');
+}
+});
+
+const container = document.getElementById('historicalData');
+
+if (!container) {
+console.error("❌ Container not found!");
+return;
+}
+
+// Filter events
+let filteredEvents = allHistoricalEvents;
+if (type !== 'all') {
+filteredEvents = allHistoricalEvents.filter(e => {
+return e.event_type.toLowerCase() === type.toLowerCase();
+});
+}
+
+console.log("📊 Filtered:", filteredEvents.length, "events");
+
+// Show empty state
+if (filteredEvents.length === 0) {
+container.innerHTML = `
+<div class="empty-events">
+<div class="empty-events-icon">📜</div>
+<p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No ${type} events found</p>
+<p style="font-size: 0.9rem;">No events of this type in your area</p>
+</div>
+`;
+return;
+}
+
+// Build HTML with full details
+const eventIcons = {
+'typhoon': '🌪️',
+'flood': '🌊',
+'drought': '☀️',
+'earthquake': '🏚️',
+'landslide': '⛰️',
+'storm_surge': '🌊'
+};
+
+let html = '<div class="event-timeline">';
+
+filteredEvents.forEach(event => {
+const icon = eventIcons[event.event_type] || '⚠️';
+const severityClass = `severity-${event.severity}`;
+const badgeClass = `badge-${event.severity}`;
+
+const eventDate = new Date(event.event_date);
+const formattedDate = eventDate.toLocaleDateString('en-US', {
+year: 'numeric',
+month: 'long',
+day: 'numeric'
+});
+const timeAgo = formatTimeAgoFromDate(eventDate);
+
+html += `
+<div class="event-item ${severityClass}">
+<div class="event-header">
+<div class="event-title">
+<span class="event-icon">${icon}</span>
+<span>${event.event_name}</span>
+</div>
+<div class="event-badges">
+<span class="event-badge ${badgeClass}">${event.severity}</span>
+</div>
+</div>
+
+<div class="event-date">
+<span>📅</span>
+<span>${formattedDate} (${timeAgo})</span>
+</div>
+
+${event.description ? `
+<div class="event-description">${event.description}</div>
+` : ''}
+
+<div class="event-meta">
+${event.distance_km ? `
+<div class="event-meta-item">
+<span>📍</span>
+<span><span class="event-meta-value">${event.distance_km} km</span> away</span>
+</div>
+` : ''}
+
+${event.affected_areas ? `
+<div class="event-meta-item">
+<span>🗺️</span>
+<span class="event-meta-value">${event.affected_areas}</span>
+</div>
+` : ''}
+
+${event.casualties > 0 ? `
+<div class="event-meta-item">
+<span>👥</span>
+<span><span class="event-meta-value">${event.casualties.toLocaleString()}</span> casualties</span>
+</div>
+` : ''}
+
+${event.damage_estimate ? `
+<div class="event-meta-item">
+<span>💰</span>
+<span class="event-meta-value">${event.damage_estimate}</span>
+</div>
+` : ''}
+
+${event.source ? `
+<div class="event-meta-item">
+<span>📋</span>
+<span>Source: <span class="event-meta-value">${event.source}</span></span>
+</div>
+` : ''}
+</div>
+</div>
+`;
+});
+
+html += '</div>';
+container.innerHTML = html;
+console.log("✅ Events displayed with full details");
+}
+function formatTimeAgoFromDate(date) {
+const now = new Date();
+const diffMs = now - date;
+const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+const diffMonths = Math.floor(diffDays / 30);
+const diffYears = Math.floor(diffDays / 365);
+
+if (diffYears > 0) {
+return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
+}
+if (diffMonths > 0) {
+return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+}
+if (diffDays > 0) {
+return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+}
+return 'Today';
+}
+
+function displayHistoricalStats(stats) {
+const container = document.getElementById('historicalStats');
+
+if (!stats || stats.total_events === 0) {
+container.style.display = 'none';
+return;
+}
+
+let html = '<div class="stats-grid">';
+
+// Total events
+html += `
+<div class="stat-box">
+<div class="stat-box-value">${stats.total_events}</div>
+<div class="stat-box-label">Total Events</div>
+</div>
+`;
+
+// By severity
+const severities = stats.by_severity || {};
+if (severities.extreme) {
+html += `
+<div class="stat-box">
+<div class="stat-box-value" style="color: #dc2626;">${severities.extreme}</div>
+<div class="stat-box-label">Extreme</div>
+</div>
+`;
+}
+
+// Total casualties
+if (stats.total_casualties > 0) {
+html += `
+<div class="stat-box">
+<div class="stat-box-value" style="color: var(--danger);">${stats.total_casualties.toLocaleString()}</div>
+<div class="stat-box-label">Total Casualties</div>
+</div>
+`;
+}
+
+// Most recent event
+if (stats.most_recent) {
+const eventDate = new Date(stats.most_recent.date);
+const timeAgo = formatTimeAgoFromDate(eventDate);
+
+html += `
+<div class="stat-box" style="grid-column: span 2;">
+<div style="font-size: 0.9rem; color: var(--text); margin-bottom: 4px;">
+<strong>${stats.most_recent.name}</strong>
+</div>
+<div class="stat-box-label">${timeAgo}</div>
+</div>
+`;
+}
+
+html += '</div>';
+
+container.innerHTML = html;
+container.style.display = 'block';
+}
+
+function displayHistoricalEvents(events) {
+const container = document.getElementById('historicalData');
+
+console.log("🎯 displayHistoricalEvents called with:", events.length, "events");
+console.log("🎯 Current filter:", currentEventFilter);
+
+// Filter events
+let filteredEvents = events;
+if (currentEventFilter !== 'all') {
+filteredEvents = events.filter(e => {
+const eventType = (e.event_type || '').toLowerCase().trim();
+const filterType = currentEventFilter.toLowerCase().trim();
+console.log(`Comparing "${eventType}" === "${filterType}"`);
+return eventType === filterType;
+});
+}
+
+console.log("🎯 After filter:", filteredEvents.length, "events");
+
+// Show empty state if no results
+if (filteredEvents.length === 0) {
+container.innerHTML = `
+<div class="empty-events">
+<div class="empty-events-icon">📜</div>
+<p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No ${currentEventFilter} events found</p>
+<p style="font-size: 0.9rem;">No events of this type in your area</p>
+</div>
+`;
+return;
+}
+
+// Build HTML (THIS MUST RUN!)
+let html = '<div class="event-timeline">';
+
+filteredEvents.forEach(event => {
+html += `
+<div class="event-item">
+<h4>${event.event_name}</h4>
+<p>Type: ${event.event_type}</p>
+<p>Date: ${event.event_date}</p>
+</div>
+`;
+});
+
+html += '</div>';
+
+console.log("🎯 Setting innerHTML...");
+container.innerHTML = html;
+console.log("✅ Done!");
+}
+
+
+function formatTimeAgoFromDate(date) {
+const now = new Date();
+const diffMs = now - date;
+const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+const diffMonths = Math.floor(diffDays / 30);
+const diffYears = Math.floor(diffDays / 365);
+
+if (diffYears > 0) {
+return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
+}
+if (diffMonths > 0) {
+return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+}
+if (diffDays > 0) {
+return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+}
+return 'Today';
+}
+window.addEventListener('DOMContentLoaded', () => {
+const savedToken = localStorage.getItem('authToken');
+const savedUser = localStorage.getItem('currentUser');
+
+if (savedToken && savedUser) {
+authToken = savedToken;
+currentUser = JSON.parse(savedUser);
+showDashboard();
+} else {
+const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+if (!hasSeenWelcome) {
+showScreen('welcomePage');
+localStorage.setItem('hasSeenWelcome', 'true');
+}
+}
+
+initBackgroundAudio();
+});
+
+// NOTIFICATION FUNCTIONS
+let notificationPanelOpen = false;
+
+async function toggleNotificationPanel() {
+const panel = document.getElementById('notificationPanel');
+notificationPanelOpen = !notificationPanelOpen;
+
+if (notificationPanelOpen) {
+panel.classList.add('open');
+await loadNotifications();
+} else {
+panel.classList.remove('open');
+}
+}
+
+async function loadNotifications() {
+const listEl = document.getElementById('notificationList');
+listEl.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading...</p></div>';
+
+try {
+const response = await fetch(`${API_BASE}/notifications`, {
+headers: { 'Authorization': `Bearer ${authToken}` }
+});
+
+if (!response.ok) throw new Error('Failed to load notifications');
+
+const notifications = await response.json();
+
+if (notifications.length === 0) {
+listEl.innerHTML = `
+<div class="empty-notifications">
+<div class="empty-notifications-icon">🔔</div>
+<p>No notifications yet</p>
+<p style="font-size: 0.85rem; margin-top: 0.5rem;">You'll see weather alerts and updates here</p>
+</div>
+`;
+return;
+}
+
+let html = '';
+notifications.forEach(notif => {
+const typeIcons = {
+'info': 'ℹ️',
+'warning': '⚠️',
+'alert': '🚨',
+'success': '✅'
+};
+
+const icon = typeIcons[notif.type] || 'ℹ️';
+const unreadClass = notif.is_read ? '' : 'unread';
+const date = new Date(notif.created_at);
+const timeAgo = formatTimeAgo(date);
+
+html += `
+<div class="notification-item ${unreadClass} notification-type-${notif.type}" onclick="markAsRead(${notif.notification_id})">
+<div class="notification-title">
+<span>${icon}</span>
+<span>${notif.title}</span>
+</div>
+<div class="notification-message">${notif.message}</div>
+<div class="notification-time">${timeAgo}</div>
+</div>
+`;
+});
+
+listEl.innerHTML = html;
+
+} catch (error) {
+listEl.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+}
+}
+
+async function markAsRead(notifId) {
+try {
+await fetch(`${API_BASE}/notifications/${notifId}/read`, {
+method: 'POST',
+headers: { 'Authorization': `Bearer ${authToken}` }
+});
+
+// Reload notifications to update UI
+await loadNotifications();
+
+// Update badge count immediately
+await updateNotificationBadge();
+
+} catch (error) {
+console.error('Error marking as read:', error);
+}
+}
+
+async function updateNotificationBadge() {
+try {
+const response = await fetch(`${API_BASE}/notifications/unread/count`, {
+headers: { 'Authorization': `Bearer ${authToken}` }
+});
+
+if (!response.ok) {
+console.error('Failed to fetch unread count');
+return;
+}
+
+const data = await response.json();
+const badge = document.getElementById('notifBadge');
+
+if (!badge) return;
+
+if (data.count > 0) {
+badge.textContent = data.count > 99 ? '99+' : data.count;
+badge.classList.add('show');
+} else {
+badge.classList.remove('show');
+badge.textContent = '0';
+}
+} catch (error) {
+console.error('Error updating badge:', error);
+}
+}
+
+function formatTimeAgo(date) {
+const now = new Date();
+const diff = Math.floor((now - date) / 1000); // difference in seconds
+
+if (diff < 60) return 'Just now';
+if (diff < 3600) {
+const mins = Math.floor(diff / 60);
+return `${mins} minute${mins > 1 ? 's' : ''} ago`;
+}
+if (diff < 86400) {
+const hours = Math.floor(diff / 3600);
+return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+}
+if (diff < 604800) {
+const days = Math.floor(diff / 86400);
+return `${days} day${days > 1 ? 's' : ''} ago`;
+}
+
+// More than a week - show actual date
+return date.toLocaleDateString('en-US', {
+month: 'short',
+day: 'numeric',
+year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+});
+}
+
+function displayHistoricalEvents(data) {
+}
+</script>
+</body>
+</html>
